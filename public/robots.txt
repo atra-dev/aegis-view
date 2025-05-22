@@ -1,0 +1,15 @@
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://atracaas.cisoasaservice.io/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 10
+
+# Disallow sensitive paths
+Disallow: /api/
+Disallow: /auth/
+Disallow: /_next/
+Disallow: /static/ 
