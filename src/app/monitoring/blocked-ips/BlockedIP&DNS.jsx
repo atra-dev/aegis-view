@@ -1092,7 +1092,7 @@ export default function BlockedIPAndDNS() {
         {/* Entries List */}
         <div className="bg-gray-800/50 border border-gray-700/80 rounded-lg p-4">
           <div className="flex justify-between items-center mb-3">
-            <h2 className="text-lg font-medium text-cyan-400">Blocked Entries</h2>
+            <h2 className="text-lg font-medium text-cyan-400">IP & DNS Entries</h2>
             {selectedEntries.size > 0 && (
               <div className="flex gap-2">
                 <button
@@ -1183,22 +1183,18 @@ export default function BlockedIPAndDNS() {
                               <Shield size={16} />
                             </button>
                           )}
-                          {userRole === 'super_admin' && (
-                            <>
-                              <button
-                                onClick={() => handleEditEntry(entry)}
-                                className="p-1.5 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white rounded-md transition-all"
-                              >
-                                <Edit2 size={16} />
-                              </button>
-                              <button
-                                onClick={() => handleDeleteEntry(entry.id)}
-                                className="p-1.5 bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-500 hover:to-orange-500 text-white rounded-md transition-all"
-                              >
-                                <Trash2 size={16} />
-                              </button>
-                            </>
-                          )}
+                          <button
+                            onClick={() => handleEditEntry(entry)}
+                            className="p-1.5 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white rounded-md transition-all"
+                          >
+                            <Edit2 size={16} />
+                          </button>
+                          <button
+                            onClick={() => handleDeleteEntry(entry.id)}
+                            className="p-1.5 bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-500 hover:to-orange-500 text-white rounded-md transition-all"
+                          >
+                            <Trash2 size={16} />
+                          </button>
                         </div>
                       </td>
                     </tr>
