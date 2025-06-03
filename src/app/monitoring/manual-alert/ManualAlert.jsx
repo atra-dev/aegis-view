@@ -120,7 +120,8 @@ export default function ManualAlert() {
                 'External Handshake Failure',
                 'External SYN Flood Attacker',
                 'External Account Login Failure Anomaly',
-                'Public to Private Exploit Anomaly'
+                'Public to Private Exploit Anomaly',
+                'External Firewall Denial Anomaly'
                 
             ]
 
