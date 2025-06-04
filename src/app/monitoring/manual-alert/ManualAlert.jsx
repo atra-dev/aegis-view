@@ -7,6 +7,10 @@ import { getBlockedEntries } from '@/services/management'
 import { checkIPReputation } from '@/services/virustotal'
 import { logger } from '@/utils/logger'
 import { analyzeAlertWithGPT } from '@/services/chatgpt'
+import { 
+    GB, US, CA, AU, NZ, JP, KR, CN, IN, SG, MY, ID, PH, TH, VN,
+    AF, AL, DZ, AD, AO, AG, AR, AM, AT, AZ, BS, BH, BD, BB, BY, BE, BZ, BJ, BT, BO, BA, BW, BR, BN, BG, BF, BI, KH, CM, CV, CF, TD, CL, CO, KM, CG, CR, HR, CU, CY, CZ, DK, DJ, DM, DO, EC, EG, SV, GQ, ER, EE, ET, FJ, FI, FR, GA, GM, GE, DE, GH, GR, GD, GT, GN, GW, GY, HT, HN, HU, IS, IL, IT, JM, JO, KZ, KE, KI, KP, KW, KG, LA, LV, LB, LS, LR, LY, LI, LT, LU, MG, MW, MV, ML, MT, MH, MR, MU, MX, FM, MD, MC, MN, ME, MA, MZ, MM, NA, NR, NP, NL, NI, NE, NG, NO, OM, PK, PW, PA, PG, PY, PE, PL, PT, QA, RO, RU, RW, KN, LC, VC, WS, SM, ST, SA, SN, RS, SC, SL, SB, SO, ZA, SS, ES, LK, SD, SR, SZ, SE, CH, SY, TW, TJ, TZ, TL, TO, TT, TN, TR, TM, TV, UG, UA, AE, UY, UZ, VU, VA, VE, YE, ZM, ZW
+} from 'country-flag-icons/react/3x2'
 
 // Add project mapping constant
 const PROJECT_MAPPING = {
@@ -17,10 +21,67 @@ const PROJECT_MAPPING = {
     'Cantilan': 'Project Atlas'
 };
 
+// Add country code to flag mapping
+const COUNTRY_FLAGS = {
+    'GB': GB, 'US': US, 'CA': CA, 'AU': AU, 'NZ': NZ, 'JP': JP, 'KR': KR, 'CN': CN, 'IN': IN, 'SG': SG, 'MY': MY, 'ID': ID, 'PH': PH, 'TH': TH, 'VN': VN,
+    'AF': AF, 'AL': AL, 'DZ': DZ, 'AD': AD, 'AO': AO, 'AG': AG, 'AR': AR, 'AM': AM, 'AT': AT, 'AZ': AZ, 'BS': BS, 'BH': BH, 'BD': BD, 'BB': BB, 'BY': BY,
+    'BE': BE, 'BZ': BZ, 'BJ': BJ, 'BT': BT, 'BO': BO, 'BA': BA, 'BW': BW, 'BR': BR, 'BN': BN, 'BG': BG, 'BF': BF, 'BI': BI, 'KH': KH, 'CM': CM, 'CV': CV,
+    'CF': CF, 'TD': TD, 'CL': CL, 'CO': CO, 'KM': KM, 'CG': CG, 'CR': CR, 'HR': HR, 'CU': CU, 'CY': CY, 'CZ': CZ, 'DK': DK, 'DJ': DJ, 'DM': DM, 'DO': DO,
+    'EC': EC, 'EG': EG, 'SV': SV, 'GQ': GQ, 'ER': ER, 'EE': EE, 'ET': ET, 'FJ': FJ, 'FI': FI, 'FR': FR, 'GA': GA, 'GM': GM, 'GE': GE, 'DE': DE, 'GH': GH,
+    'GR': GR, 'GD': GD, 'GT': GT, 'GN': GN, 'GW': GW, 'GY': GY, 'HT': HT, 'HN': HN, 'HU': HU, 'IS': IS, 'IL': IL, 'IT': IT, 'JM': JM, 'JO': JO, 'KZ': KZ,
+    'KE': KE, 'KI': KI, 'KP': KP, 'KW': KW, 'KG': KG, 'LA': LA, 'LV': LV, 'LB': LB, 'LS': LS, 'LR': LR, 'LY': LY, 'LI': LI, 'LT': LT, 'LU': LU, 'MG': MG,
+    'MW': MW, 'MV': MV, 'ML': ML, 'MT': MT, 'MH': MH, 'MR': MR, 'MU': MU, 'MX': MX, 'FM': FM, 'MD': MD, 'MC': MC, 'MN': MN, 'ME': ME, 'MA': MA, 'MZ': MZ,
+    'MM': MM, 'NA': NA, 'NR': NR, 'NP': NP, 'NL': NL, 'NI': NI, 'NE': NE, 'NG': NG, 'NO': NO, 'OM': OM, 'PK': PK, 'PW': PW, 'PA': PA, 'PG': PG, 'PY': PY,
+    'PE': PE, 'PL': PL, 'PT': PT, 'QA': QA, 'RO': RO, 'RU': RU, 'RW': RW, 'KN': KN, 'LC': LC, 'VC': VC, 'WS': WS, 'SM': SM, 'ST': ST, 'SA': SA, 'SN': SN,
+    'RS': RS, 'SC': SC, 'SL': SL, 'SB': SB, 'SO': SO, 'ZA': ZA, 'SS': SS, 'ES': ES, 'LK': LK, 'SD': SD, 'SR': SR, 'SZ': SZ, 'SE': SE, 'CH': CH, 'SY': SY,
+    'TW': TW, 'TJ': TJ, 'TZ': TZ, 'TL': TL, 'TO': TO, 'TT': TT, 'TN': TN, 'TR': TR, 'TM': TM, 'TV': TV, 'UG': UG, 'UA': UA, 'AE': AE, 'UY': UY, 'UZ': UZ,
+    'VU': VU, 'VA': VA, 'VE': VE, 'YE': YE, 'ZM': ZM, 'ZW': ZW
+}
+
 // Function to get project display name
 const getProjectDisplayName = (tenant) => {
     return PROJECT_MAPPING[tenant] || tenant;
 };
+
+// Function to get country code from country name
+const getCountryCode = (countryName) => {
+    const countryMap = {
+        'Afghanistan': 'AF', 'Albania': 'AL', 'Algeria': 'DZ', 'Andorra': 'AD', 'Angola': 'AO', 'Antigua and Barbuda': 'AG',
+        'Argentina': 'AR', 'Armenia': 'AM', 'Australia': 'AU', 'Austria': 'AT', 'Azerbaijan': 'AZ', 'Bahamas': 'BS',
+        'Bahrain': 'BH', 'Bangladesh': 'BD', 'Barbados': 'BB', 'Belarus': 'BY', 'Belgium': 'BE', 'Belize': 'BZ',
+        'Benin': 'BJ', 'Bhutan': 'BT', 'Bolivia': 'BO', 'Bosnia and Herzegovina': 'BA', 'Botswana': 'BW', 'Brazil': 'BR',
+        'Brunei': 'BN', 'Bulgaria': 'BG', 'Burkina Faso': 'BF', 'Burundi': 'BI', 'Cambodia': 'KH', 'Cameroon': 'CM',
+        'Canada': 'CA', 'Cape Verde': 'CV', 'Central African Republic': 'CF', 'Chad': 'TD', 'Chile': 'CL', 'China': 'CN',
+        'Colombia': 'CO', 'Comoros': 'KM', 'Congo': 'CG', 'Costa Rica': 'CR', 'Croatia': 'HR', 'Cuba': 'CU',
+        'Cyprus': 'CY', 'Czech Republic': 'CZ', 'Denmark': 'DK', 'Djibouti': 'DJ', 'Dominica': 'DM', 'Dominican Republic': 'DO',
+        'Ecuador': 'EC', 'Egypt': 'EG', 'El Salvador': 'SV', 'Equatorial Guinea': 'GQ', 'Eritrea': 'ER', 'Estonia': 'EE',
+        'Ethiopia': 'ET', 'Fiji': 'FJ', 'Finland': 'FI', 'France': 'FR', 'Gabon': 'GA', 'Gambia': 'GM', 'Georgia': 'GE',
+        'Germany': 'DE', 'Ghana': 'GH', 'Greece': 'GR', 'Grenada': 'GD', 'Guatemala': 'GT', 'Guinea': 'GN',
+        'Guinea-Bissau': 'GW', 'Guyana': 'GY', 'Haiti': 'HT', 'Honduras': 'HN', 'Hungary': 'HU', 'Iceland': 'IS',
+        'India': 'IN', 'Indonesia': 'ID', 'Iran': 'IR', 'Iraq': 'IQ', 'Ireland': 'IE', 'Israel': 'IL', 'Italy': 'IT',
+        'Jamaica': 'JM', 'Japan': 'JP', 'Jordan': 'JO', 'Kazakhstan': 'KZ', 'Kenya': 'KE', 'Kiribati': 'KI',
+        'North Korea': 'KP', 'South Korea': 'KR', 'Kuwait': 'KW', 'Kyrgyzstan': 'KG', 'Laos': 'LA', 'Latvia': 'LV',
+        'Lebanon': 'LB', 'Lesotho': 'LS', 'Liberia': 'LR', 'Libya': 'LY', 'Liechtenstein': 'LI', 'Lithuania': 'LT',
+        'Luxembourg': 'LU', 'Madagascar': 'MG', 'Malawi': 'MW', 'Malaysia': 'MY', 'Maldives': 'MV', 'Mali': 'ML',
+        'Malta': 'MT', 'Marshall Islands': 'MH', 'Mauritania': 'MR', 'Mauritius': 'MU', 'Mexico': 'MX', 'Micronesia': 'FM',
+        'Moldova': 'MD', 'Monaco': 'MC', 'Mongolia': 'MN', 'Montenegro': 'ME', 'Morocco': 'MA', 'Mozambique': 'MZ',
+        'Myanmar': 'MM', 'Namibia': 'NA', 'Nauru': 'NR', 'Nepal': 'NP', 'Netherlands': 'NL', 'New Zealand': 'NZ',
+        'Nicaragua': 'NI', 'Niger': 'NE', 'Nigeria': 'NG', 'Norway': 'NO', 'Oman': 'OM', 'Pakistan': 'PK', 'Palau': 'PW',
+        'Palestine': 'PS', 'Panama': 'PA', 'Papua New Guinea': 'PG', 'Paraguay': 'PY', 'Peru': 'PE', 'Philippines': 'PH',
+        'Poland': 'PL', 'Portugal': 'PT', 'Qatar': 'QA', 'Romania': 'RO', 'Russia': 'RU', 'Rwanda': 'RW',
+        'Saint Kitts and Nevis': 'KN', 'Saint Lucia': 'LC', 'Saint Vincent and the Grenadines': 'VC', 'Samoa': 'WS',
+        'San Marino': 'SM', 'Sao Tome and Principe': 'ST', 'Saudi Arabia': 'SA', 'Senegal': 'SN', 'Serbia': 'RS',
+        'Seychelles': 'SC', 'Sierra Leone': 'SL', 'Singapore': 'SG', 'Solomon Islands': 'SB', 'Somalia': 'SO',
+        'South Africa': 'ZA', 'South Sudan': 'SS', 'Spain': 'ES', 'Sri Lanka': 'LK', 'Sudan': 'SD', 'Suriname': 'SR',
+        'Swaziland': 'SZ', 'Sweden': 'SE', 'Switzerland': 'CH', 'Syria': 'SY', 'Taiwan': 'TW', 'Tajikistan': 'TJ',
+        'Tanzania': 'TZ', 'Thailand': 'TH', 'Timor-Leste': 'TL', 'Togo': 'TG', 'Tonga': 'TO', 'Trinidad and Tobago': 'TT',
+        'Tunisia': 'TN', 'Turkey': 'TR', 'Turkmenistan': 'TM', 'Tuvalu': 'TV', 'Uganda': 'UG', 'Ukraine': 'UA',
+        'United Arab Emirates': 'AE', 'United Kingdom': 'GB', 'United States': 'US', 'Uruguay': 'UY', 'Uzbekistan': 'UZ',
+        'Vanuatu': 'VU', 'Vatican City': 'VA', 'Venezuela': 'VE', 'Vietnam': 'VN', 'Yemen': 'YE', 'Zambia': 'ZM',
+        'Zimbabwe': 'ZW'
+    }
+    return countryMap[countryName] || countryName
+}
 
 export default function ManualAlert() {
     const router = useRouter()
@@ -636,15 +697,25 @@ export default function ManualAlert() {
 
                                         <div>
                                             <label className="block text-sm font-medium text-gray-300 mb-1">Source Country</label>
-                                            <input
-                                                type="text"
-                                                name="sourceGeo.country"
-                                                value={formData.sourceGeo.country}
-                                                onChange={handleChange}
-                                                className="w-full px-4 py-2 bg-gray-800/80 rounded-lg border border-gray-700/50 
-                                                         text-gray-200 focus:outline-none focus:border-blue-500/50 
-                                                         focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
-                                            />
+                                            <div className="flex items-center gap-2">
+                                                {formData.sourceGeo.country && (
+                                                    <div className="w-6 h-4">
+                                                        {(() => {
+                                                            const FlagComponent = COUNTRY_FLAGS[getCountryCode(formData.sourceGeo.country)]
+                                                            return FlagComponent ? <FlagComponent className="w-full h-full object-cover rounded" /> : null
+                                                        })()}
+                                                    </div>
+                                                )}
+                                                <input
+                                                    type="text"
+                                                    name="sourceGeo.country"
+                                                    value={formData.sourceGeo.country}
+                                                    onChange={handleChange}
+                                                    className="w-full px-4 py-2 bg-gray-800/80 rounded-lg border border-gray-700/50 
+                                                             text-gray-200 focus:outline-none focus:border-blue-500/50 
+                                                             focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+                                                />
+                                            </div>
                                         </div>
 
                                         <div>
@@ -694,15 +765,25 @@ export default function ManualAlert() {
 
                                         <div>
                                             <label className="block text-sm font-medium text-gray-300 mb-1">Destination Country</label>
-                                            <input
-                                                type="text"
-                                                name="destinationGeo.country"
-                                                value={formData.destinationGeo.country}
-                                                onChange={handleChange}
-                                                className="w-full px-4 py-2 bg-gray-800/80 rounded-lg border border-gray-700/50 
-                                                         text-gray-200 focus:outline-none focus:border-blue-500/50 
-                                                         focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
-                                            />
+                                            <div className="flex items-center gap-2">
+                                                {formData.destinationGeo.country && (
+                                                    <div className="w-6 h-4">
+                                                        {(() => {
+                                                            const FlagComponent = COUNTRY_FLAGS[getCountryCode(formData.destinationGeo.country)]
+                                                            return FlagComponent ? <FlagComponent className="w-full h-full object-cover rounded" /> : null
+                                                        })()}
+                                                    </div>
+                                                )}
+                                                <input
+                                                    type="text"
+                                                    name="destinationGeo.country"
+                                                    value={formData.destinationGeo.country}
+                                                    onChange={handleChange}
+                                                    className="w-full px-4 py-2 bg-gray-800/80 rounded-lg border border-gray-700/50 
+                                                             text-gray-200 focus:outline-none focus:border-blue-500/50 
+                                                             focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+                                                />
+                                            </div>
                                         </div>
 
                                         <div>
