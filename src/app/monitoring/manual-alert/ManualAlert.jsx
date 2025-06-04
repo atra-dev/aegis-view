@@ -361,46 +361,50 @@ export default function ManualAlert() {
     }
 
     return (
-        <div className="min-h-screen p-8 bg-gray-900 text-gray-100">
-            <div className="max-w-4xl mx-auto">
-                <div className="mb-8">
-                    <h1 className="text-4xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent font-mono">
+        <div className="min-h-screen p-4 md:p-8 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-gray-100">
+            <div className="max-w-6xl mx-auto">
+                {/* Header Section */}
+                <div className="mb-8 text-center">
+                    <h1 className="text-4xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-500 bg-clip-text text-transparent font-mono mb-3">
                         Manual Alert Input
                     </h1>
-                    <p className="text-gray-400 mt-3 text-lg font-mono">
-                        Enter alert details below or paste JSON data to auto-fill
+                    <p className="text-gray-400 text-lg font-mono max-w-2xl mx-auto">
+                        Enter alert details below or paste JSON data to auto-fill the form
                     </p>
                 </div>
 
                 {/* JSON Paste Section */}
-                <div className="bg-gray-800/50 p-6 rounded-lg shadow-lg backdrop-blur-sm mb-8">
-                    <div className="flex items-center justify-between mb-4">
+                <div className="bg-gray-800/50 p-6 rounded-xl shadow-2xl backdrop-blur-sm mb-8 border border-gray-700/50">
+                    <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-4">
                         <div>
-                            <h2 className="text-xl font-semibold text-gray-200">Paste JSON Data</h2>
+                            <h2 className="text-xl font-semibold text-gray-200 flex items-center gap-2">
+                                <svg className="w-5 h-5 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                </svg>
+                                Paste JSON Data
+                            </h2>
                             <p className="text-sm text-gray-400 mt-1">
-                                Paste your JSON data below to automatically fill the form fields. The data will be converted to Philippines timezone.
+                                Paste your JSON data below to automatically fill the form fields
                             </p>
                         </div>
                         <button
                             onClick={handleJsonPaste}
                             className="px-4 py-2 bg-purple-500/20 text-purple-300 rounded-lg hover:bg-purple-500/30 
-                                     border border-purple-500/30 transition-colors flex items-center gap-2"
+                                     border border-purple-500/30 transition-all duration-200 flex items-center gap-2
+                                     hover:scale-105 active:scale-95"
                         >
                             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" 
-                                />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                             </svg>
                             Auto-fill Form
                         </button>
                     </div>
                     
-                    <div className="space-y-4">
-                        <div className="relative">
-                            <textarea
-                                value={jsonInput}
-                                onChange={(e) => setJsonInput(e.target.value)}
-                                placeholder="Example:
+                    <div className="relative">
+                        <textarea
+                            value={jsonInput}
+                            onChange={(e) => setJsonInput(e.target.value)}
+                            placeholder="Example:
 {
     &quot;timestamp_utc&quot;: &quot;2024-03-23T10:30:00Z&quot;,
     &quot;tenant_name&quot;: &quot;Example Corp&quot;,
@@ -410,375 +414,402 @@ export default function ManualAlert() {
     &quot;destinationIp&quot;: &quot;10.0.0.1&quot;,
     &quot;description&quot;: &quot;Detected unusual network activity&quot;
 }"
-                                className="w-full h-64 px-4 py-3 bg-gray-800 rounded-lg border border-gray-700 text-gray-200 
-                                         focus:outline-none focus:border-cyan-500 font-mono text-sm resize-y"
-                                style={{ minHeight: '16rem' }}
-                            />
-                            <div className="absolute top-2 right-2 space-x-2">
-                                <button
-                                    onClick={() => setJsonInput('')}
-                                    className="px-2 py-1 bg-gray-700/50 text-gray-400 rounded hover:bg-gray-700 
-                                             transition-colors text-sm"
-                                    title="Clear JSON"
-                                >
-                                    Clear
-                                </button>
-                            </div>
+                            className="w-full h-64 px-4 py-3 bg-gray-800/80 rounded-lg border border-gray-700/50 text-gray-200 
+                                     focus:outline-none focus:border-purple-500/50 focus:ring-2 focus:ring-purple-500/20 
+                                     font-mono text-sm resize-y transition-all duration-200"
+                            style={{ minHeight: '16rem' }}
+                        />
+                        <div className="absolute top-2 right-2 space-x-2">
+                            <button
+                                onClick={() => setJsonInput('')}
+                                className="px-2 py-1 bg-gray-700/50 text-gray-400 rounded hover:bg-gray-700 
+                                         transition-all duration-200 text-sm hover:text-gray-200"
+                                title="Clear JSON"
+                            >
+                                Clear
+                            </button>
                         </div>
                     </div>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="bg-gray-800/50 p-6 rounded-lg shadow-lg backdrop-blur-sm">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            {/* Basic Information */}
+                    {/* Form Sections */}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        {/* Basic Information Section */}
+                        <div className="bg-gray-800/50 p-6 rounded-xl shadow-2xl backdrop-blur-sm border border-gray-700/50">
+                            <h3 className="text-xl font-semibold text-gray-200 mb-6 flex items-center gap-2">
+                                <svg className="w-5 h-5 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                Basic Information
+                            </h3>
                             <div className="space-y-4">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-300 mb-1">
-                                        Timestamp <span className="text-red-500">*</span>
-                                    </label>
-                                    <input
-                                        type="datetime-local"
-                                        name="timestamp"
-                                        value={formData.timestamp}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-2 bg-gray-800 rounded-lg border border-gray-700 text-gray-200 
-                                                 focus:outline-none focus:border-cyan-500"
-                                        required
-                                    />
-                                </div>
+                                {/* Basic Information Fields */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-300 mb-1">
+                                            Timestamp <span className="text-red-500">*</span>
+                                        </label>
+                                        <input
+                                            type="datetime-local"
+                                            name="timestamp"
+                                            value={formData.timestamp}
+                                            onChange={handleChange}
+                                            className="w-full px-4 py-2 bg-gray-800/80 rounded-lg border border-gray-700/50 
+                                                     text-gray-200 focus:outline-none focus:border-cyan-500/50 
+                                                     focus:ring-2 focus:ring-cyan-500/20 transition-all duration-200"
+                                            required
+                                        />
+                                    </div>
 
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-300 mb-1">Tenant</label>
-                                    <input
-                                        type="text"
-                                        name="tenant"
-                                        value={formData.tenant}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-2 bg-gray-800 rounded-lg border border-gray-700 text-gray-200 
-                                                 focus:outline-none focus:border-cyan-500"
-                                    />
-                                </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-300 mb-1">Tenant</label>
+                                        <input
+                                            type="text"
+                                            name="tenant"
+                                            value={formData.tenant}
+                                            onChange={handleChange}
+                                            className="w-full px-4 py-2 bg-gray-800/80 rounded-lg border border-gray-700/50 
+                                                     text-gray-200 focus:outline-none focus:border-cyan-500/50 
+                                                     focus:ring-2 focus:ring-cyan-500/20 transition-all duration-200"
+                                        />
+                                    </div>
 
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-300 mb-1">Kill Chain Stage</label>
-                                    <input
-                                        type="text"
-                                        name="killChainStage"
-                                        value={formData.killChainStage}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-2 bg-gray-800 rounded-lg border border-gray-700 text-gray-200 
-                                                 focus:outline-none focus:border-cyan-500"
-                                    />
-                                </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-300 mb-1">Kill Chain Stage</label>
+                                        <input
+                                            type="text"
+                                            name="killChainStage"
+                                            value={formData.killChainStage}
+                                            onChange={handleChange}
+                                            className="w-full px-4 py-2 bg-gray-800/80 rounded-lg border border-gray-700/50 
+                                                     text-gray-200 focus:outline-none focus:border-cyan-500/50 
+                                                     focus:ring-2 focus:ring-cyan-500/20 transition-all duration-200"
+                                        />
+                                    </div>
 
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-300 mb-1">
-                                        Alert Name <span className="text-red-500">*</span>
-                                    </label>
-                                    <input
-                                        type="text"
-                                        name="alertName"
-                                        value={formData.alertName}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-2 bg-gray-800 rounded-lg border border-gray-700 text-gray-200 
-                                                 focus:outline-none focus:border-cyan-500"
-                                        required
-                                    />
-                                </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-300 mb-1">
+                                            Alert Name <span className="text-red-500">*</span>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            name="alertName"
+                                            value={formData.alertName}
+                                            onChange={handleChange}
+                                            className="w-full px-4 py-2 bg-gray-800/80 rounded-lg border border-gray-700/50 
+                                                     text-gray-200 focus:outline-none focus:border-cyan-500/50 
+                                                     focus:ring-2 focus:ring-cyan-500/20 transition-all duration-200"
+                                            required
+                                        />
+                                    </div>
 
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-300 mb-1">Technique</label>
-                                    <input
-                                        type="text"
-                                        name="technique"
-                                        value={formData.technique}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-2 bg-gray-800 rounded-lg border border-gray-700 text-gray-200 
-                                                 focus:outline-none focus:border-cyan-500"
-                                    />
-                                </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-300 mb-1">Technique</label>
+                                        <input
+                                            type="text"
+                                            name="technique"
+                                            value={formData.technique}
+                                            onChange={handleChange}
+                                            className="w-full px-4 py-2 bg-gray-800/80 rounded-lg border border-gray-700/50 
+                                                     text-gray-200 focus:outline-none focus:border-cyan-500/50 
+                                                     focus:ring-2 focus:ring-cyan-500/20 transition-all duration-200"
+                                        />
+                                    </div>
 
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-300 mb-1">Category</label>
-                                    <input
-                                        type="text"
-                                        name="category"
-                                        value={formData.category}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-2 bg-gray-800 rounded-lg border border-gray-700 text-gray-200 
-                                                 focus:outline-none focus:border-cyan-500"
-                                    />
-                                </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-300 mb-1">Category</label>
+                                        <input
+                                            type="text"
+                                            name="category"
+                                            value={formData.category}
+                                            onChange={handleChange}
+                                            className="w-full px-4 py-2 bg-gray-800/80 rounded-lg border border-gray-700/50 
+                                                     text-gray-200 focus:outline-none focus:border-cyan-500/50 
+                                                     focus:ring-2 focus:ring-cyan-500/20 transition-all duration-200"
+                                        />
+                                    </div>
 
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-300 mb-1">
-                                        Status <span className="text-red-500">*</span>
-                                    </label>
-                                    <input
-                                        type="text"
-                                        name="status"
-                                        value="Closed"
-                                        readOnly
-                                        className="w-full px-4 py-2 bg-gray-800 rounded-lg border border-gray-700 text-gray-200 
-                                                 focus:outline-none focus:border-cyan-500 cursor-not-allowed"
-                                    />
-                                </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-300 mb-1">
+                                            Status <span className="text-red-500">*</span>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            name="status"
+                                            value="Closed"
+                                            readOnly
+                                            className="w-full px-4 py-2 bg-gray-800/80 rounded-lg border border-gray-700/50 
+                                                     text-gray-200 cursor-not-allowed opacity-75"
+                                        />
+                                    </div>
 
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-300 mb-1">
-                                        Verification Status <span className="text-red-500">*</span>
-                                    </label>
-                                    <select
-                                        name="verificationStatus"
-                                        value={formData.verificationStatus}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-2 bg-gray-800 rounded-lg border border-gray-700 text-gray-200 
-                                                 focus:outline-none focus:border-cyan-500"
-                                        required
-                                    >
-                                        <option value="To Be Confirmed">To Be Confirmed</option>
-                                        <option value="True Positive">True Positive</option>
-                                        <option value="False Positive">False Positive</option>
-                                    </select>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-300 mb-1">
+                                            Verification Status <span className="text-red-500">*</span>
+                                        </label>
+                                        <select
+                                            name="verificationStatus"
+                                            value={formData.verificationStatus}
+                                            onChange={handleChange}
+                                            className="w-full px-4 py-2 bg-gray-800/80 rounded-lg border border-gray-700/50 
+                                                     text-gray-200 focus:outline-none focus:border-cyan-500/50 
+                                                     focus:ring-2 focus:ring-cyan-500/20 transition-all duration-200"
+                                            required
+                                        >
+                                            <option value="To Be Confirmed">To Be Confirmed</option>
+                                            <option value="True Positive">True Positive</option>
+                                            <option value="False Positive">False Positive</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
+                        </div>
 
-                            {/* Network Information */}
+                        {/* Network Information Section */}
+                        <div className="bg-gray-800/50 p-6 rounded-xl shadow-2xl backdrop-blur-sm border border-gray-700/50">
+                            <h3 className="text-xl font-semibold text-gray-200 mb-6 flex items-center gap-2">
+                                <svg className="w-5 h-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                                </svg>
+                                Network Information
+                            </h3>
                             <div className="space-y-4">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-300 mb-1">Host</label>
-                                    <input
-                                        type="text"
-                                        name="host"
-                                        value={formData.host}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-2 bg-gray-800 rounded-lg border border-gray-700 text-gray-200 
-                                                 focus:outline-none focus:border-cyan-500"
-                                    />
+                                {/* Host Information */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-300 mb-1">Host</label>
+                                        <input
+                                            type="text"
+                                            name="host"
+                                            value={formData.host}
+                                            onChange={handleChange}
+                                            className="w-full px-4 py-2 bg-gray-800/80 rounded-lg border border-gray-700/50 
+                                                     text-gray-200 focus:outline-none focus:border-blue-500/50 
+                                                     focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-300 mb-1">Host Name</label>
+                                        <input
+                                            type="text"
+                                            name="hostname"
+                                            value={formData.hostname}
+                                            onChange={handleChange}
+                                            className="w-full px-4 py-2 bg-gray-800/80 rounded-lg border border-gray-700/50 
+                                                     text-gray-200 focus:outline-none focus:border-blue-500/50 
+                                                     focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+                                        />
+                                    </div>
                                 </div>
 
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-300 mb-1">Host Name</label>
-                                    <input
-                                        type="text"
-                                        name="hostname"
-                                        value={formData.hostname}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-2 bg-gray-800 rounded-lg border border-gray-700 text-gray-200 
-                                                 focus:outline-none focus:border-cyan-500"
-                                    />
+                                {/* Source Information */}
+                                <div className="bg-gray-800/30 p-4 rounded-lg border border-gray-700/30">
+                                    <h4 className="text-sm font-medium text-gray-300 mb-3">Source Details</h4>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-300 mb-1">Source IP</label>
+                                            <input
+                                                type="text"
+                                                name="sourceIp"
+                                                value={formData.sourceIp}
+                                                onChange={handleChange}
+                                                className="w-full px-4 py-2 bg-gray-800/80 rounded-lg border border-gray-700/50 
+                                                         text-gray-200 focus:outline-none focus:border-blue-500/50 
+                                                         focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-300 mb-1">Source Type</label>
+                                            <input
+                                                type="text"
+                                                name="sourceType"
+                                                value={formData.sourceType}
+                                                onChange={handleChange}
+                                                className="w-full px-4 py-2 bg-gray-800/80 rounded-lg border border-gray-700/50 
+                                                         text-gray-200 focus:outline-none focus:border-blue-500/50 
+                                                         focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-300 mb-1">Source Country</label>
+                                            <input
+                                                type="text"
+                                                name="sourceGeo.country"
+                                                value={formData.sourceGeo.country}
+                                                onChange={handleChange}
+                                                className="w-full px-4 py-2 bg-gray-800/80 rounded-lg border border-gray-700/50 
+                                                         text-gray-200 focus:outline-none focus:border-blue-500/50 
+                                                         focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-300 mb-1">Source City</label>
+                                            <input
+                                                type="text"
+                                                name="sourceGeo.city"
+                                                value={formData.sourceGeo.city}
+                                                onChange={handleChange}
+                                                className="w-full px-4 py-2 bg-gray-800/80 rounded-lg border border-gray-700/50 
+                                                         text-gray-200 focus:outline-none focus:border-blue-500/50 
+                                                         focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
 
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-300 mb-1">Source IP</label>
-                                    <input
-                                        type="text"
-                                        name="sourceIp"
-                                        value={formData.sourceIp}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-2 bg-gray-800 rounded-lg border border-gray-700 text-gray-200 
-                                                 focus:outline-none focus:border-cyan-500"
-                                    />
-                                </div>
+                                {/* Destination Information */}
+                                <div className="bg-gray-800/30 p-4 rounded-lg border border-gray-700/30">
+                                    <h4 className="text-sm font-medium text-gray-300 mb-3">Destination Details</h4>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-300 mb-1">Destination IP</label>
+                                            <input
+                                                type="text"
+                                                name="destinationIp"
+                                                value={formData.destinationIp}
+                                                onChange={handleChange}
+                                                className="w-full px-4 py-2 bg-gray-800/80 rounded-lg border border-gray-700/50 
+                                                         text-gray-200 focus:outline-none focus:border-blue-500/50 
+                                                         focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+                                            />
+                                        </div>
 
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-300 mb-1">Source Type</label>
-                                    <input
-                                        type="text"
-                                        name="sourceType"
-                                        value={formData.sourceType}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-2 bg-gray-800 rounded-lg border border-gray-700 text-gray-200 
-                                                 focus:outline-none focus:border-cyan-500"
-                                    />
-                                </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-300 mb-1">Destination Type</label>
+                                            <input
+                                                type="text"
+                                                name="destinationType"
+                                                value={formData.destinationType}
+                                                onChange={handleChange}
+                                                className="w-full px-4 py-2 bg-gray-800/80 rounded-lg border border-gray-700/50 
+                                                         text-gray-200 focus:outline-none focus:border-blue-500/50 
+                                                         focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+                                            />
+                                        </div>
 
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-300 mb-1">Source Country</label>
-                                    <input
-                                        type="text"
-                                        name="sourceGeo.country"
-                                        value={formData.sourceGeo.country}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-2 bg-gray-800 rounded-lg border border-gray-700 text-gray-200 
-                                                 focus:outline-none focus:border-cyan-500"
-                                    />
-                                </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-300 mb-1">Destination Country</label>
+                                            <input
+                                                type="text"
+                                                name="destinationGeo.country"
+                                                value={formData.destinationGeo.country}
+                                                onChange={handleChange}
+                                                className="w-full px-4 py-2 bg-gray-800/80 rounded-lg border border-gray-700/50 
+                                                         text-gray-200 focus:outline-none focus:border-blue-500/50 
+                                                         focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+                                            />
+                                        </div>
 
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-300 mb-1">Source City</label>
-                                    <input
-                                        type="text"
-                                        name="sourceGeo.city"
-                                        value={formData.sourceGeo.city}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-2 bg-gray-800 rounded-lg border border-gray-700 text-gray-200 
-                                                 focus:outline-none focus:border-cyan-500"
-                                    />
-                                </div>
-                            </div>
-
-                            {/* Destination Information */}
-                            <div className="space-y-4">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-300 mb-1">Destination IP</label>
-                                    <input
-                                        type="text"
-                                        name="destinationIp"
-                                        value={formData.destinationIp}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-2 bg-gray-800 rounded-lg border border-gray-700 text-gray-200 
-                                                 focus:outline-none focus:border-cyan-500"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-300 mb-1">Destination Type</label>
-                                    <input
-                                        type="text"
-                                        name="destinationType"
-                                        value={formData.destinationType}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-2 bg-gray-800 rounded-lg border border-gray-700 text-gray-200 
-                                                 focus:outline-none focus:border-cyan-500"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-300 mb-1">Destination Country</label>
-                                    <input
-                                        type="text"
-                                        name="destinationGeo.country"
-                                        value={formData.destinationGeo.country}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-2 bg-gray-800 rounded-lg border border-gray-700 text-gray-200 
-                                                 focus:outline-none focus:border-cyan-500"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-300 mb-1">Destination City</label>
-                                    <input
-                                        type="text"
-                                        name="destinationGeo.city"
-                                        value={formData.destinationGeo.city}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-2 bg-gray-800 rounded-lg border border-gray-700 text-gray-200 
-                                                 focus:outline-none focus:border-cyan-500"
-                                    />
-                                </div>
-                            </div>
-
-                            {/* Description and Link */}
-                            <div className="space-y-4 md:col-span-2">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-300 mb-1">Description</label>
-                                    <textarea
-                                        name="description"
-                                        value={formData.description}
-                                        onChange={handleChange}
-                                        rows="4"
-                                        className="w-full px-4 py-2 bg-gray-800 rounded-lg border border-gray-700 text-gray-200 
-                                                 focus:outline-none focus:border-cyan-500"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-300 mb-1">
-                                        Link <span className="text-red-500">*</span>
-                                    </label>
-                                    <input
-                                        type="url"
-                                        name="link"
-                                        value={formData.link}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-2 bg-gray-800 rounded-lg border border-gray-700 text-gray-200 
-                                                 focus:outline-none focus:border-cyan-500"
-                                        required
-                                    />
-                                </div>
-
-                                <div className="md:col-span-2">
-                                    <label className="block text-sm font-medium text-gray-300 mb-1">Remarks</label>
-                                    <textarea
-                                        name="remarks"
-                                        value={formData.remarks}
-                                        onChange={handleChange}
-                                        rows="4"
-                                        placeholder="Add any additional notes or remarks about this alert..."
-                                        className="w-full px-4 py-2 bg-gray-800 rounded-lg border border-gray-700 text-gray-200 
-                                                 focus:outline-none focus:border-cyan-500"
-                                    />
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-300 mb-1">Destination City</label>
+                                            <input
+                                                type="text"
+                                                name="destinationGeo.city"
+                                                value={formData.destinationGeo.city}
+                                                onChange={handleChange}
+                                                className="w-full px-4 py-2 bg-gray-800/80 rounded-lg border border-gray-700/50 
+                                                         text-gray-200 focus:outline-none focus:border-blue-500/50 
+                                                         focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    {/* Add AI Analysis Button */}
-                    {/* <div className="flex justify-end gap-4 mb-6">
-                        <button
-                            onClick={handleAIAnalysis}
-                            disabled={isAnalyzing || !formData.alertName}
-                            className={`px-6 py-2.5 bg-purple-500/20 text-purple-300 rounded-lg hover:bg-purple-500/30 
-                                     border border-purple-500/30 transition-colors flex items-center gap-2
-                                     ${isAnalyzing || !formData.alertName ? 'opacity-50 cursor-not-allowed' : ''}`}
-                        >
-                            {isAnalyzing ? (
-                                <>
-                                    <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-purple-300"></div>
-                                    Analyzing...
-                                </>
-                            ) : (
-                                <>
-                                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                                    </svg>
-                                    Analyze with AI
-                                </>
-                            )}
-                        </button>
-                    </div> */}
+                    {/* Description and Remarks Section */}
+                    <div className="bg-gray-800/50 p-6 rounded-xl shadow-2xl backdrop-blur-sm border border-gray-700/50">
+                        <h3 className="text-xl font-semibold text-gray-200 mb-6 flex items-center gap-2">
+                            <svg className="w-5 h-5 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            </svg>
+                            Additional Information
+                        </h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-300 mb-1">Description</label>
+                                <textarea
+                                    name="description"
+                                    value={formData.description}
+                                    onChange={handleChange}
+                                    rows="4"
+                                    className="w-full px-4 py-2 bg-gray-800/80 rounded-lg border border-gray-700/50 
+                                             text-gray-200 focus:outline-none focus:border-purple-500/50 
+                                             focus:ring-2 focus:ring-purple-500/20 transition-all duration-200"
+                                />
+                            </div>
 
-                    {/* Display Analysis Results */}
-                    {/* {analysisResult && (
-                        <div className="mb-6 bg-gray-800/50 p-6 rounded-lg shadow-lg backdrop-blur-sm">
-                            <h3 className="text-xl font-semibold text-gray-200 mb-4">AI Analysis Results</h3>
-                            <div className="space-y-6">
-                                <div className="bg-gray-700/30 p-4 rounded-lg">
-                                    <h4 className="text-lg font-medium text-cyan-300 mb-2">Risk Assessment</h4>
-                                    <div className="flex items-center gap-2 mb-2">
-                                        <span className={`px-2 py-1 rounded text-sm font-medium ${
-                                            analysisResult.riskAssessment.level === 'High' ? 'bg-red-500/20 text-red-300' :
-                                            analysisResult.riskAssessment.level === 'Medium' ? 'bg-yellow-500/20 text-yellow-300' :
-                                            'bg-green-500/20 text-green-300'
-                                        }`}>
-                                            {analysisResult.riskAssessment.level}
-                                        </span>
-                                        <span className="text-sm text-gray-400">{analysisResult.riskAssessment.justification}</span>
-                                    </div>
-                                </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-300 mb-1">Remarks</label>
+                                <textarea
+                                    name="remarks"
+                                    value={formData.remarks}
+                                    onChange={handleChange}
+                                    rows="4"
+                                    placeholder="Add any additional notes or remarks about this alert..."
+                                    className="w-full px-4 py-2 bg-gray-800/80 rounded-lg border border-gray-700/50 
+                                             text-gray-200 focus:outline-none focus:border-purple-500/50 
+                                             focus:ring-2 focus:ring-purple-500/20 transition-all duration-200"
+                                />
+                            </div>
+
+                            <div className="md:col-span-2">
+                                <label className="block text-sm font-medium text-gray-300 mb-1">
+                                    Link <span className="text-red-500">*</span>
+                                </label>
+                                <input
+                                    type="url"
+                                    name="link"
+                                    value={formData.link}
+                                    onChange={handleChange}
+                                    className="w-full px-4 py-2 bg-gray-800/80 rounded-lg border border-gray-700/50 
+                                             text-gray-200 focus:outline-none focus:border-purple-500/50 
+                                             focus:ring-2 focus:ring-purple-500/20 transition-all duration-200"
+                                    required
+                                />
                             </div>
                         </div>
-                    )} */}
+                    </div>
 
-                    <div className="flex justify-end gap-4">
+                    {/* Action Buttons */}
+                    <div className="flex justify-end gap-4 mt-8">
                         <button
                             type="button"
                             onClick={() => router.push('/monitoring/alerts')}
-                            className="px-6 py-2.5 bg-gray-700 text-gray-300 rounded-lg hover:bg-gray-600 
-                                     transition-colors"
+                            className="px-6 py-2.5 bg-gray-700/50 text-gray-300 rounded-lg hover:bg-gray-700 
+                                     transition-all duration-200 hover:scale-105 active:scale-95
+                                     border border-gray-600/50"
                         >
                             Cancel
                         </button>
                         <button
                             type="submit"
                             disabled={loading}
-                            className="px-6 py-2.5 bg-cyan-500/20 text-cyan-300 rounded-lg hover:bg-cyan-500/30 
+                            className="px-6 py-2.5 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-300 
+                                     rounded-lg hover:from-cyan-500/30 hover:to-blue-500/30
                                      border border-cyan-500/30 disabled:opacity-50 disabled:cursor-not-allowed 
-                                     transition-colors"
+                                     transition-all duration-200 hover:scale-105 active:scale-95
+                                     flex items-center gap-2"
                         >
-                            {loading ? 'Submitting...' : 'Submit Alert'}
+                            {loading ? (
+                                <>
+                                    <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-cyan-300"></div>
+                                    Submitting...
+                                </>
+                            ) : (
+                                <>
+                                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    Submit Alert
+                                </>
+                            )}
                         </button>
                     </div>
                 </form>
