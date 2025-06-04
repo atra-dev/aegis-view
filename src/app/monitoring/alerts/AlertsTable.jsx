@@ -1749,33 +1749,44 @@ export default function AlertsTable() {
                             <span className="font-mono text-cyan-300">{alert.sourceIp || "-"}</span>
                           </td>
                           <td className="px-4 py-3 whitespace-nowrap text-sm">
-                            <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-gray-500/20 text-gray-300 border border-gray-500/30">
+                            <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-gray-500/20 text-gray-300 border border-gray-500/30 flex items-center gap-1.5">
+                              {alert.sourceType === "Public" ? (
+                                <svg className="w-3.5 h-3.5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                                </svg>
+                              ) : alert.sourceType === "Private" ? (
+                                <svg className="w-3.5 h-3.5 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                </svg>
+                              ) : null}
                               {alert.sourceType || "-"}
                             </span>
                           </td>
                           <td className="px-4 py-3 whitespace-nowrap text-sm">
-                            <div className="flex items-center gap-2">
-                              {alert.sourceGeo?.country && (
-                                <div className="w-6 h-4">
-                                  {(() => {
-                                    const FlagComponent = COUNTRY_FLAGS[getCountryCode(alert.sourceGeo.country)]
-                                    return FlagComponent ? <FlagComponent className="w-full h-full object-cover rounded" /> : null
-                                  })()}
-                                </div>
+                            <span className="font-mono text-cyan-300">{alert.sourceGeo?.country || "-"}</span>
+                          </td>
+                          <td className="px-4 py-3 whitespace-nowrap text-sm">
+                            <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+                              {alert.sourceGeo?.country || "-"}
+                              {alert.sourceGeo?.city && (
+                                <span className="ml-1 text-gray-400">({alert.sourceGeo.city})</span>
                               )}
-                              <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
-                                {alert.sourceGeo?.country || "-"}
-                                {alert.sourceGeo?.city && (
-                                  <span className="ml-1 text-gray-400">({alert.sourceGeo.city})</span>
-                                )}
-                              </span>
-                            </div>
+                            </span>
                           </td>
                           <td className="px-4 py-3 whitespace-nowrap text-sm">
                             <span className="font-mono text-cyan-300">{alert.destinationIp || "-"}</span>
                           </td>
                           <td className="px-4 py-3 whitespace-nowrap text-sm">
-                            <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-gray-500/20 text-gray-300 border border-gray-500/30">
+                            <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-gray-500/20 text-gray-300 border border-gray-500/30 flex items-center gap-1.5">
+                              {alert.destinationType === "Public" ? (
+                                <svg className="w-3.5 h-3.5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                                </svg>
+                              ) : alert.destinationType === "Private" ? (
+                                <svg className="w-3.5 h-3.5 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                </svg>
+                              ) : null}
                               {alert.destinationType || "-"}
                             </span>
                           </td>
