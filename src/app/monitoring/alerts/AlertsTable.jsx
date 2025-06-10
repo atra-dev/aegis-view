@@ -844,7 +844,7 @@ export default function AlertsTable() {
 
   const handleSelectAll = (e) => {
     if (e.target.checked) {
-      const newSelected = new Set(filteredAlerts.map((alert) => alert.id))
+      const newSelected = new Set(filteredAlerts.slice(0, 20).map((alert) => alert.id))
       setSelectedAlerts(newSelected)
     } else {
       setSelectedAlerts(new Set())
