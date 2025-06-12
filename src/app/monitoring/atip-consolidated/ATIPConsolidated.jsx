@@ -1641,35 +1641,52 @@ export default function ATIPConsolidated() {
 
     {/* Duplicate Domains Modal */}
     {showDuplicateModal && (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div className="bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="p-3 bg-yellow-500/10 rounded-full">
+      <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50">
+        <div className="bg-gray-800 rounded-lg p-6 max-w-2xl w-full mx-4 shadow-2xl border border-yellow-500/20">
+          <div className="flex items-start gap-4 mb-6">
+            <div className="p-3 bg-yellow-500/10 rounded-full mt-1">
               <AlertCircle className="w-6 h-6 text-yellow-400" />
             </div>
-            <div>
-              <h3 className="text-xl font-bold text-yellow-400 font-mono mb-1">
+            <div className="flex-1">
+              <h3 className="text-xl font-bold text-yellow-400 font-mono mb-2">
                 Duplicate Domains Detected
               </h3>
-              <p className="text-gray-400 text-sm font-mono">
-                The following domains already exist in the ATIP database for{' '}
-                {newEntry?.tenant === 'SiyCha' ? 'Project Orion' :
-                 newEntry?.tenant === 'MWELL' ? 'Project Chiron' :
-                 newEntry?.tenant === 'MPIW' ? 'Project Hunt' :
-                 newEntry?.tenant === 'NIKI' ? 'Project NIKI' :
-                 newEntry?.tenant === 'Cantilan' ? 'Project Atlas' :
-                 newEntry?.tenant}:
-              </p>
-            </div>
-          </div>
-
-          <div className="bg-gray-700/30 rounded-lg p-4 mb-6">
-            <div className="space-y-2">
-              {duplicateDomains.map((domain, index) => (
-                <div key={index} className="text-yellow-400 text-sm font-mono">
-                  {domain}
+              <div className="bg-gray-700/30 rounded-lg p-4 mb-4">
+                <p className="text-gray-300 text-sm font-mono mb-2">
+                  The following domains already exist in the ATIP database for{' '}
+                  <span className="text-yellow-400 font-semibold">
+                    {newEntry?.tenant === 'SiyCha' ? 'Project Orion' :
+                     newEntry?.tenant === 'MWELL' ? 'Project Chiron' :
+                     newEntry?.tenant === 'MPIW' ? 'Project Hunt' :
+                     newEntry?.tenant === 'NIKI' ? 'Project NIKI' :
+                     newEntry?.tenant === 'Cantilan' ? 'Project Atlas' :
+                     newEntry?.tenant}
+                  </span>:
+                </p>
+                <div className="bg-gray-800/50 rounded-lg p-3 max-h-48 overflow-y-auto scrollbar-thin">
+                  <div className="space-y-2">
+                    {duplicateDomains.map((domain, index) => (
+                      <div key={index} className="flex items-center gap-2 text-yellow-400 text-sm font-mono">
+                        <div className="w-1.5 h-1.5 bg-yellow-400 rounded-full"></div>
+                        <span className="break-all">{domain}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              ))}
+              </div>
+              <div className="bg-blue-500/10 rounded-lg p-4 border border-blue-500/20">
+                <div className="flex items-start gap-3">
+                  <div className="p-2 bg-blue-500/10 rounded-lg mt-1">
+                    <AlertCircle className="w-4 h-4 text-blue-400" />
+                  </div>
+                  <div>
+                    <p className="text-blue-400 text-sm font-mono mb-1">What would you like to do?</p>
+                    <p className="text-gray-400 text-sm">
+                      You can either modify your input to remove duplicates or proceed with adding these domains anyway.
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -1679,9 +1696,10 @@ export default function ATIPConsolidated() {
                 setShowDuplicateModal(false)
                 setDuplicateDomains([])
               }}
-              className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-md font-medium transition-all font-mono"
+              className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-md font-medium transition-all font-mono flex items-center gap-2"
             >
-              Cancel
+              <X size={16} />
+              <span>Cancel</span>
             </button>
             <button
               onClick={handleDuplicateConfirm}
