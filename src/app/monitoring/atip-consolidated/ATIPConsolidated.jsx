@@ -374,11 +374,12 @@ export default function ATIPConsolidated() {
   }
 
   // Add this function after the existing state declarations
-  const checkDuplicateDomains = (domains) => {
+  const checkDuplicateDomains = (domains, tenant) => {
     const domainList = domains.split('\n').filter(d => d.trim())
     const duplicates = domainList.filter(domain => {
       return entries.some(entry => 
-        entry.domain.toLowerCase() === domain.toLowerCase()
+        entry.domain.toLowerCase() === domain.toLowerCase() &&
+        entry.tenant === tenant
       )
     })
     return duplicates
@@ -388,8 +389,8 @@ export default function ATIPConsolidated() {
   const handleEntrySubmit = async (e) => {
     e.preventDefault()
     
-    // Check for duplicates
-    const duplicates = checkDuplicateDomains(newEntry.domain)
+    // Check for duplicates within the same project
+    const duplicates = checkDuplicateDomains(newEntry.domain, newEntry.tenant)
     if (duplicates.length > 0) {
       setDuplicateDomains(duplicates)
       setShowDuplicateModal(true)
@@ -511,6 +512,15 @@ export default function ATIPConsolidated() {
 
   const handleEditSubmit = async (e) => {
     e.preventDefault()
+    
+    // Check for duplicates within the same project, excluding the entries being edited
+    const duplicates = checkDuplicateDomains(editEntry.domain, editEntry.tenant)
+    if (duplicates.length > 0) {
+      setDuplicateDomains(duplicates)
+      setShowDuplicateModal(true)
+      return
+    }
+    
     setShowEditConfirmModal(true)
   }
 
@@ -1642,7 +1652,13 @@ export default function ATIPConsolidated() {
                 Duplicate Domains Detected
               </h3>
               <p className="text-gray-400 text-sm font-mono">
-                The following domains already exist in the ATIP database:
+                The following domains already exist in the ATIP database for{' '}
+                {newEntry?.tenant === 'SiyCha' ? 'Project Orion' :
+                 newEntry?.tenant === 'MWELL' ? 'Project Chiron' :
+                 newEntry?.tenant === 'MPIW' ? 'Project Hunt' :
+                 newEntry?.tenant === 'NIKI' ? 'Project NIKI' :
+                 newEntry?.tenant === 'Cantilan' ? 'Project Atlas' :
+                 newEntry?.tenant}:
               </p>
             </div>
           </div>
