@@ -95,6 +95,8 @@ export default function ATIPConsolidated() {
   const [showEditModal, setShowEditModal] = useState(false)
   const [editEntry, setEditEntry] = useState(null)
   const [showEditConfirmModal, setShowEditConfirmModal] = useState(false)
+  const [showDuplicateModal, setShowDuplicateModal] = useState(false)
+  const [duplicateDomains, setDuplicateDomains] = useState([])
 
 
   // Calculate trend summary
@@ -371,9 +373,36 @@ export default function ATIPConsolidated() {
     setShowDetailsModal(true)
   }
 
-  // Handle add/edit entry
+  // Add this function after the existing state declarations
+  const checkDuplicateDomains = (domains) => {
+    const domainList = domains.split('\n').filter(d => d.trim())
+    const duplicates = domainList.filter(domain => {
+      return entries.some(entry => 
+        entry.domain.toLowerCase() === domain.toLowerCase()
+      )
+    })
+    return duplicates
+  }
+
+  // Modify the handleEntrySubmit function
   const handleEntrySubmit = async (e) => {
     e.preventDefault()
+    
+    // Check for duplicates
+    const duplicates = checkDuplicateDomains(newEntry.domain)
+    if (duplicates.length > 0) {
+      setDuplicateDomains(duplicates)
+      setShowDuplicateModal(true)
+      return
+    }
+    
+    setShowEntryConfirmModal(true)
+  }
+
+  // Add this before the return statement
+  const handleDuplicateConfirm = () => {
+    setShowDuplicateModal(false)
+    setDuplicateDomains([])
     setShowEntryConfirmModal(true)
   }
 
@@ -1594,6 +1623,56 @@ export default function ATIPConsolidated() {
                   <span>Confirm Add</span>
                 </>
               )}
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* Duplicate Domains Modal */}
+    {showDuplicateModal && (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-3 bg-yellow-500/10 rounded-full">
+              <AlertCircle className="w-6 h-6 text-yellow-400" />
+            </div>
+            <div>
+              <h3 className="text-xl font-bold text-yellow-400 font-mono mb-1">
+                Duplicate Domains Detected
+              </h3>
+              <p className="text-gray-400 text-sm font-mono">
+                The following domains already exist in the ATIP database:
+              </p>
+            </div>
+          </div>
+
+          <div className="bg-gray-700/30 rounded-lg p-4 mb-6">
+            <div className="space-y-2">
+              {duplicateDomains.map((domain, index) => (
+                <div key={index} className="text-yellow-400 text-sm font-mono">
+                  {domain}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex justify-end gap-3">
+            <button
+              onClick={() => {
+                setShowDuplicateModal(false)
+                setDuplicateDomains([])
+              }}
+              className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-md font-medium transition-all font-mono"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleDuplicateConfirm}
+              className="px-4 py-2 bg-gradient-to-r from-yellow-600 to-yellow-500 hover:from-yellow-500 hover:to-yellow-400 text-white rounded-md font-medium transition-all font-mono flex items-center gap-2"
+            >
+              <AlertCircle size={16} />
+              <span>Proceed Anyway</span>
             </button>
           </div>
         </div>
