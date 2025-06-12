@@ -171,6 +171,7 @@ export default function ATIPConsolidated() {
     let unsubscribe = () => {}
     
     try {
+      setIsLoading(true)
       const now = new Date()
       let startDate = new Date()
       let endDate = new Date()
@@ -258,16 +259,19 @@ export default function ATIPConsolidated() {
             }, 0)
           }
           setStats(newStats)
+          setIsLoading(false)
         },
         (error) => {
           logger.error('Error fetching entries:', error)
           setIsFirebaseError(true)
+          setIsLoading(false)
           toast.error('Error fetching entries. Please check your connection.')
         }
       )
     } catch (error) {
       logger.error('Error setting up entries listener:', error)
       setIsFirebaseError(true)
+      setIsLoading(false)
     }
 
     return () => unsubscribe()

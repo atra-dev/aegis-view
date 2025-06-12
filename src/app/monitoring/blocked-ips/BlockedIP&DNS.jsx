@@ -147,6 +147,7 @@ export default function BlockedIPAndDNS() {
     // Get user role
     const getUserRole = async () => {
       try {
+        setIsLoading(true); // Add loading state
         const userDoc = await getDoc(doc(firedb, 'users', user.uid));
         if (userDoc.exists()) {
           setUserRole(userDoc.data().role);
@@ -160,16 +161,19 @@ export default function BlockedIPAndDNS() {
 
     // Set up real-time listener with error handling
     try {
+      setIsLoading(true); // Add loading state
       const unsubscribeFn = listenToBlockedEntries(
         { type: filterType, status: filterStatus, tenant: filterTenant },
         (entries) => {
           setEntries(entries);
           updateStats(entries);
           setHasFirebaseError(false); // Clear error state on successful connection
+          setIsLoading(false); // Remove loading state after data is received
         },
         (error) => {
           logger.error('Firebase connection error:', error);
           setHasFirebaseError(true);
+          setIsLoading(false); // Remove loading state on error
           toast.error('Connection error. Please check if any content blockers are enabled.');
         }
       );
@@ -183,6 +187,7 @@ export default function BlockedIPAndDNS() {
     } catch (error) {
       logger.error('Firebase setup error:', error);
       setHasFirebaseError(true);
+      setIsLoading(false); // Remove loading state on error
       toast.error('Connection error. Please check if any content blockers are enabled.');
     }
   }, [filterType, filterStatus, filterTenant, router]);
