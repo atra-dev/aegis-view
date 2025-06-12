@@ -868,8 +868,8 @@ export default function BlockedIPAndDNS() {
       </header>
       
       <div className="max-w-7xl mx-auto p-4 md:p-6">
-        {isLoading ? (
-          <div className="min-h-[60vh] flex flex-col justify-center items-center">
+        {isLoading && (
+          <div className="fixed inset-0 z-50 bg-gray-900/80 backdrop-blur-sm flex flex-col justify-center items-center">
             <div className="relative">
               <div className="w-24 h-24 border-4 border-cyan-500 rounded-full animate-spin border-t-transparent"></div>
               <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
@@ -886,373 +886,371 @@ export default function BlockedIPAndDNS() {
               </div>
             </div>
           </div>
-        ) : (
-          <>
-            {/* Stats Cards */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-              <div className="p-4 bg-gray-800/40 border border-gray-700/50 rounded-lg flex flex-col">
-                <div className="text-xs text-gray-400 uppercase tracking-wide mb-1">Blocked IPs</div>
-                <div className="text-2xl text-cyan-400 font-mono flex gap-2 items-center">
-                  <Shield size={20} />
-                  {statsData.blockedIPs}
-                </div>
-              </div>
-              
-              <div className="p-4 bg-gray-800/40 border border-gray-700/50 rounded-lg flex flex-col">
-                <div className="text-xs text-gray-400 uppercase tracking-wide mb-1">Blocked Domains</div>
-                <div className="text-2xl text-cyan-400 font-mono flex gap-2 items-center">
-                  <Globe size={20} />
-                  {statsData.blockedDomains}
-                </div>
-              </div>
-              
-              <div className="p-4 bg-gray-800/40 border border-gray-700/50 rounded-lg flex flex-col">
-                <div className="text-xs text-gray-400 uppercase tracking-wide mb-1">Unblocked IPs</div>
-                <div className="text-2xl text-cyan-400 font-mono flex gap-2 items-center">
-                  <ShieldOff size={20} />
-                  {statsData.unblockedIPs}
-                </div>
-              </div>
-              
-              <div className="p-4 bg-gray-800/40 border border-gray-700/50 rounded-lg flex flex-col">
-                <div className="text-xs text-gray-400 uppercase tracking-wide mb-1">Unblocked Domains</div>
-                <div className="text-2xl text-cyan-400 font-mono flex gap-2 items-center">
-                  <Globe size={20} />
-                  {statsData.unblockedDomains}
-                </div>
-              </div>
+        )}
+        
+        {/* Stats Cards */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+          <div className="p-4 bg-gray-800/40 border border-gray-700/50 rounded-lg flex flex-col">
+            <div className="text-xs text-gray-400 uppercase tracking-wide mb-1">Blocked IPs</div>
+            <div className="text-2xl text-cyan-400 font-mono flex gap-2 items-center">
+              <Shield size={20} />
+              {statsData.blockedIPs}
             </div>
-            
-            {/* Search and Filter Bar */}
-            <div className="flex flex-col md:flex-row gap-3 mb-6">
-              <div className="relative flex-1">
-                <Search size={18} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Search IP or domain..."
-                  value={searchTerm}
-                  onChange={handleSearch}
-                  className="w-full pl-10 pr-4 py-2.5 bg-gray-800/30 border border-gray-700/50 rounded-md text-gray-300 placeholder-gray-500 font-mono focus:outline-none focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/50 transition-all hover:bg-gray-800/50"
-                />
-              </div>
-              
-              <div className="relative">
-                <select
-                  value={filterType}
-                  onChange={(e) => setFilterType(e.target.value)}
-                  className="appearance-none pl-9 pr-10 py-2.5 bg-gray-800/30 border border-gray-700/50 rounded-md text-gray-300 font-mono focus:outline-none focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/50 transition-all hover:bg-gray-800/50 cursor-pointer min-w-[140px]"
-                >
-                  <option value="ALL">All Types</option>
-                  <option value="IP">IP Address</option>
-                  <option value="Domain">Domain</option>
-                </select>
-                <Globe size={16} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
-                <ChevronDown size={16} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
-              </div>
-              
-              <div className="relative">
-                <select
-                  value={filterStatus}
-                  onChange={(e) => setFilterStatus(e.target.value)}
-                  className="appearance-none pl-9 pr-10 py-2.5 bg-gray-800/30 border border-gray-700/50 rounded-md text-gray-300 font-mono focus:outline-none focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/50 transition-all hover:bg-gray-800/50 cursor-pointer min-w-[140px]"
-                >
-                  <option value="ALL">All Status</option>
-                  <option value="BLOCKED">Blocked</option>
-                  <option value="ALLOWED">Allowed</option>
-                </select>
-                <Shield size={16} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
-                <ChevronDown size={16} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
-              </div>
-
-              <div className="relative">
-                <select
-                  value={filterTenant}
-                  onChange={(e) => setFilterTenant(e.target.value)}
-                  className="appearance-none pl-9 pr-10 py-2.5 bg-gray-800/30 border border-gray-700/50 rounded-md text-gray-300 font-mono focus:outline-none focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/50 transition-all hover:bg-gray-800/50 cursor-pointer min-w-[140px]"
-                >
-                  <option value="ALL">All Projects</option>
-                  {PROJECT_OPTIONS.map(project => (
-                    <option key={project.value} value={project.value}>
-                      {project.label}
-                    </option>
-                  ))}
-                </select>
-                <Users size={16} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
-                <ChevronDown size={16} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
-              </div>
-              
-              <button
-                onClick={() => setIsAddingEntry(true)}
-                className="px-4 py-2.5 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white rounded-md font-medium flex items-center gap-2 transition-all shadow-lg shadow-blue-500/10 hover:shadow-blue-500/20"
-              >
-                <Plus size={18} />
-                Add New
-              </button>
+          </div>
+          
+          <div className="p-4 bg-gray-800/40 border border-gray-700/50 rounded-lg flex flex-col">
+            <div className="text-xs text-gray-400 uppercase tracking-wide mb-1">Blocked Domains</div>
+            <div className="text-2xl text-cyan-400 font-mono flex gap-2 items-center">
+              <Globe size={20} />
+              {statsData.blockedDomains}
             </div>
-            
-            {/* Add New Entry Form */}
-            {isAddingEntry && (
-              <div className="mb-6 p-6 bg-gray-800/60 border border-gray-700/80 rounded-lg animate-fadeIn shadow-lg">
-                <div className="flex justify-between items-center mb-4">
-                  <h2 className="text-xl font-semibold text-cyan-400">Add New IP or DNS Entry</h2>
-                  <div className="flex items-center gap-2">
-                    {userRole !== 'trainee' && (
-                      <button
-                        onClick={() => setIsBatchMode(!isBatchMode)}
-                        className={`px-3 py-1.5 rounded-md font-medium transition-all flex items-center gap-1.5 ${
-                          isBatchMode 
-                            ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/50' 
-                            : 'bg-gray-700/50 text-gray-300 border border-gray-600/50 hover:bg-gray-700'
-                        }`}
-                      >
-                        <FileText size={16} />
-                        Batch Mode
-                      </button>
-                    )}
-                    <button
-                      onClick={() => setIsAddingEntry(false)}
-                      className="p-1.5 hover:bg-gray-700/50 rounded-md text-gray-400 hover:text-gray-300 transition-all"
-                    >
-                      <X size={20} />
-                    </button>
-                  </div>
-                </div>
+          </div>
+          
+          <div className="p-4 bg-gray-800/40 border border-gray-700/50 rounded-lg flex flex-col">
+            <div className="text-xs text-gray-400 uppercase tracking-wide mb-1">Unblocked IPs</div>
+            <div className="text-2xl text-cyan-400 font-mono flex gap-2 items-center">
+              <ShieldOff size={20} />
+              {statsData.unblockedIPs}
+            </div>
+          </div>
+          
+          <div className="p-4 bg-gray-800/40 border border-gray-700/50 rounded-lg flex flex-col">
+            <div className="text-xs text-gray-400 uppercase tracking-wide mb-1">Unblocked Domains</div>
+            <div className="text-2xl text-cyan-400 font-mono flex gap-2 items-center">
+              <Globe size={20} />
+              {statsData.unblockedDomains}
+            </div>
+          </div>
+        </div>
+        
+        {/* Search and Filter Bar */}
+        <div className="flex flex-col md:flex-row gap-3 mb-6">
+          <div className="relative flex-1">
+            <Search size={18} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search IP or domain..."
+              value={searchTerm}
+              onChange={handleSearch}
+              className="w-full pl-10 pr-4 py-2.5 bg-gray-800/30 border border-gray-700/50 rounded-md text-gray-300 placeholder-gray-500 font-mono focus:outline-none focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/50 transition-all hover:bg-gray-800/50"
+            />
+          </div>
+          
+          <div className="relative">
+            <select
+              value={filterType}
+              onChange={(e) => setFilterType(e.target.value)}
+              className="appearance-none pl-9 pr-10 py-2.5 bg-gray-800/30 border border-gray-700/50 rounded-md text-gray-300 font-mono focus:outline-none focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/50 transition-all hover:bg-gray-800/50 cursor-pointer min-w-[140px]"
+            >
+              <option value="ALL">All Types</option>
+              <option value="IP">IP Address</option>
+              <option value="Domain">Domain</option>
+            </select>
+            <Globe size={16} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
+            <ChevronDown size={16} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
+          </div>
+          
+          <div className="relative">
+            <select
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
+              className="appearance-none pl-9 pr-10 py-2.5 bg-gray-800/30 border border-gray-700/50 rounded-md text-gray-300 font-mono focus:outline-none focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/50 transition-all hover:bg-gray-800/50 cursor-pointer min-w-[140px]"
+            >
+              <option value="ALL">All Status</option>
+              <option value="BLOCKED">Blocked</option>
+              <option value="ALLOWED">Allowed</option>
+            </select>
+            <Shield size={16} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
+            <ChevronDown size={16} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
+          </div>
 
-                {!isBatchMode ? (
-                  // Single Entry Mode
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-gray-300 mb-1">Type</label>
-                      <select
-                        value={newEntry.type}
-                        onChange={(e) => setNewEntry({ ...newEntry, type: e.target.value })}
-                        className="w-full px-3 py-2 bg-gray-900/80 border border-gray-700 rounded-md text-gray-300 focus:outline-none focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/50 transition-all"
-                      >
-                        <option value="IP">IP Address</option>
-                        <option value="Domain">Domain</option>
-                      </select>
-                    </div>
-                    
-                    <div>
-                      <label className="block text-gray-300 mb-1">Value</label>
-                      <input
-                        type="text"
-                        placeholder="Enter IP or Domain"
-                        value={newEntry.value}
-                        onChange={(e) => setNewEntry({ ...newEntry, value: e.target.value })}
-                        className="w-full px-3 py-2 bg-gray-900/80 border border-gray-700 rounded-md text-gray-300 focus:outline-none focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/50 transition-all"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-gray-300 mb-1">Tenant</label>
-                      <select
-                        value={newEntry.tenant}
-                        onChange={(e) => setNewEntry({ ...newEntry, tenant: e.target.value })}
-                        className="w-full px-3 py-2 bg-gray-900/80 border border-gray-700 rounded-md text-gray-300 focus:outline-none focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/50 transition-all"
-                      >
-                        {PROJECT_OPTIONS.map(project => (
-                          <option key={project.value} value={project.value}>
-                            {project.label}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-                ) : (
-                  // Batch Entry Mode
-                  <div className="space-y-4">
-                    <div>
-                      <label className="block text-gray-300 mb-1">Tenant</label>
-                      <select
-                        value={newEntry.tenant}
-                        onChange={(e) => setNewEntry({ ...newEntry, tenant: e.target.value })}
-                        className="w-full px-3 py-2 bg-gray-900/80 border border-gray-700 rounded-md text-gray-300 focus:outline-none focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/50 transition-all"
-                      >
-                        {PROJECT_OPTIONS.map(project => (
-                          <option key={project.value} value={project.value}>
-                            {project.label}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="flex items-center gap-2 text-gray-300">
-                        <input
-                          type="checkbox"
-                          checked={newEntry.blocked}
-                          onChange={(e) => setNewEntry({ ...newEntry, blocked: e.target.checked })}
-                          className="rounded border-gray-700 text-cyan-500 focus:ring-cyan-500/50 bg-gray-900/80"
-                        />
-                        Set entries as blocked by default
-                      </label>
-                    </div>
-                    
-                    <div>
-                      <label className="block text-gray-300 mb-1">Enter Multiple IPs or Domains (one per line)</label>
-                      <textarea
-                        value={batchEntries}
-                        onChange={(e) => setBatchEntries(e.target.value)}
-                        placeholder="Enter IPs or domains (one per line)&#10;Example:&#10;192.168.1.1&#10;malicious-domain.com&#10;10.0.0.1&#10;another-domain.com"
-                        className="w-full h-40 px-3 py-2 bg-gray-900/80 border border-gray-700 rounded-md text-gray-300 focus:outline-none focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/50 transition-all font-mono"
-                      />
-                      <p className="mt-2 text-sm text-gray-400">The system will automatically detect whether each entry is an IP or domain.</p>
-                    </div>
-                  </div>
-                )}
-
-                <div className="mt-4 text-right">
+          <div className="relative">
+            <select
+              value={filterTenant}
+              onChange={(e) => setFilterTenant(e.target.value)}
+              className="appearance-none pl-9 pr-10 py-2.5 bg-gray-800/30 border border-gray-700/50 rounded-md text-gray-300 font-mono focus:outline-none focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/50 transition-all hover:bg-gray-800/50 cursor-pointer min-w-[140px]"
+            >
+              <option value="ALL">All Projects</option>
+              {PROJECT_OPTIONS.map(project => (
+                <option key={project.value} value={project.value}>
+                  {project.label}
+                </option>
+              ))}
+            </select>
+            <Users size={16} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
+            <ChevronDown size={16} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
+          </div>
+          
+          <button
+            onClick={() => setIsAddingEntry(true)}
+            className="px-4 py-2.5 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white rounded-md font-medium flex items-center gap-2 transition-all shadow-lg shadow-blue-500/10 hover:shadow-blue-500/20"
+          >
+            <Plus size={18} />
+            Add New
+          </button>
+        </div>
+        
+        {/* Add New Entry Form */}
+        {isAddingEntry && (
+          <div className="mb-6 p-6 bg-gray-800/60 border border-gray-700/80 rounded-lg animate-fadeIn shadow-lg">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-semibold text-cyan-400">Add New IP or DNS Entry</h2>
+              <div className="flex items-center gap-2">
+                {userRole !== 'trainee' && (
                   <button
-                    onClick={isBatchMode ? handleBatchEntry : handleAddEntry}
-                    className="px-5 py-2 bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-500 hover:to-teal-500 text-white rounded-md font-medium transition-all flex items-center gap-2 ml-auto"
+                    onClick={() => setIsBatchMode(!isBatchMode)}
+                    className={`px-3 py-1.5 rounded-md font-medium transition-all flex items-center gap-1.5 ${
+                      isBatchMode 
+                        ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/50' 
+                        : 'bg-gray-700/50 text-gray-300 border border-gray-600/50 hover:bg-gray-700'
+                    }`}
                   >
-                    <Plus size={18} />
-                    {isBatchMode ? 'Add Batch' : 'Add Entry'}
+                    <FileText size={16} />
+                    Batch Mode
                   </button>
+                )}
+                <button
+                  onClick={() => setIsAddingEntry(false)}
+                  className="p-1.5 hover:bg-gray-700/50 rounded-md text-gray-400 hover:text-gray-300 transition-all"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+            </div>
+
+            {!isBatchMode ? (
+              // Single Entry Mode
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-gray-300 mb-1">Type</label>
+                  <select
+                    value={newEntry.type}
+                    onChange={(e) => setNewEntry({ ...newEntry, type: e.target.value })}
+                    className="w-full px-3 py-2 bg-gray-900/80 border border-gray-700 rounded-md text-gray-300 focus:outline-none focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/50 transition-all"
+                  >
+                    <option value="IP">IP Address</option>
+                    <option value="Domain">Domain</option>
+                  </select>
+                </div>
+                
+                <div>
+                  <label className="block text-gray-300 mb-1">Value</label>
+                  <input
+                    type="text"
+                    placeholder="Enter IP or Domain"
+                    value={newEntry.value}
+                    onChange={(e) => setNewEntry({ ...newEntry, value: e.target.value })}
+                    className="w-full px-3 py-2 bg-gray-900/80 border border-gray-700 rounded-md text-gray-300 focus:outline-none focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/50 transition-all"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-300 mb-1">Tenant</label>
+                  <select
+                    value={newEntry.tenant}
+                    onChange={(e) => setNewEntry({ ...newEntry, tenant: e.target.value })}
+                    className="w-full px-3 py-2 bg-gray-900/80 border border-gray-700 rounded-md text-gray-300 focus:outline-none focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/50 transition-all"
+                  >
+                    {PROJECT_OPTIONS.map(project => (
+                      <option key={project.value} value={project.value}>
+                        {project.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            ) : (
+              // Batch Entry Mode
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-gray-300 mb-1">Tenant</label>
+                  <select
+                    value={newEntry.tenant}
+                    onChange={(e) => setNewEntry({ ...newEntry, tenant: e.target.value })}
+                    className="w-full px-3 py-2 bg-gray-900/80 border border-gray-700 rounded-md text-gray-300 focus:outline-none focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/50 transition-all"
+                  >
+                    {PROJECT_OPTIONS.map(project => (
+                      <option key={project.value} value={project.value}>
+                        {project.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="flex items-center gap-2 text-gray-300">
+                    <input
+                      type="checkbox"
+                      checked={newEntry.blocked}
+                      onChange={(e) => setNewEntry({ ...newEntry, blocked: e.target.checked })}
+                      className="rounded border-gray-700 text-cyan-500 focus:ring-cyan-500/50 bg-gray-900/80"
+                    />
+                    Set entries as blocked by default
+                  </label>
+                </div>
+                
+                <div>
+                  <label className="block text-gray-300 mb-1">Enter Multiple IPs or Domains (one per line)</label>
+                  <textarea
+                    value={batchEntries}
+                    onChange={(e) => setBatchEntries(e.target.value)}
+                    placeholder="Enter IPs or domains (one per line)&#10;Example:&#10;192.168.1.1&#10;malicious-domain.com&#10;10.0.0.1&#10;another-domain.com"
+                    className="w-full h-40 px-3 py-2 bg-gray-900/80 border border-gray-700 rounded-md text-gray-300 focus:outline-none focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/50 transition-all font-mono"
+                  />
+                  <p className="mt-2 text-sm text-gray-400">The system will automatically detect whether each entry is an IP or domain.</p>
                 </div>
               </div>
             )}
-            
-            {/* Entries List */}
-            <div className="bg-gray-800/50 border border-gray-700/80 rounded-lg p-4">
-              <div className="flex justify-between items-center mb-3">
-                <h2 className="text-lg font-medium text-cyan-400">IP & DNS Entries</h2>
-                {selectedEntries.size > 0 && (
-                  <div className="flex gap-2">
-                    <button
-                      onClick={handleBulkBlock}
-                      className="px-3 py-1.5 bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-500 hover:to-teal-500 text-white rounded-md font-medium transition-all flex items-center gap-1.5"
-                    >
-                      <Shield size={16} />
-                      Block Selected ({selectedEntries.size})
-                    </button>
-                  </div>
-                )}
-              </div>
-              <table className="w-full text-left">
-                <thead>
-                  <tr>
-                    <th className="px-4 py-2">
-                      <input
-                        type="checkbox"
-                        onChange={(e) => handleSelectAll(e.target.checked)}
-                        checked={filteredEntries.length > 0 && selectedEntries.size === filteredEntries.length}
-                        className="rounded border-gray-700 text-cyan-500 focus:ring-cyan-500/50 bg-gray-900/80"
-                      />
-                    </th>
-                    <th className="px-4 py-2">Type</th>
-                    <th className="px-4 py-2">Value</th>
-                    <th className="px-4 py-2">Project</th>
-                    <th className="px-4 py-2">Status</th>
-                    <th 
-                      className="px-4 py-2 cursor-pointer hover:text-cyan-400 transition-colors"
-                      onClick={() => requestSort('createdAt')}
-                    >
-                      <div className="flex items-center gap-1">
-                        Created At
-                        {sortConfig.key === 'createdAt' && (
-                          <ChevronDown 
-                            size={16} 
-                            className={`transition-transform ${sortConfig.direction === 'asc' ? 'rotate-180' : ''}`}
-                          />
-                        )}
-                      </div>
-                    </th>
-                    <th className="px-4 py-2">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredEntries
-                    .slice(currentPage * 20, (currentPage + 1) * 20)
-                    .map((entry) => {
-                      const projectName = getProjectDisplayName(entry.tenant);
-                      
-                      return (
-                        <tr key={entry.id} className="border-t border-gray-700">
-                          <td className="px-4 py-2">
-                            <input
-                              type="checkbox"
-                              checked={selectedEntries.has(entry.id)}
-                              onChange={(e) => handleSelectEntry(entry.id, e.target.checked)}
-                              className="rounded border-gray-700 text-cyan-500 focus:ring-cyan-500/50 bg-gray-900/80"
-                            />
-                          </td>
-                          <td className="px-4 py-2">{entry.type}</td>
-                          <td className="px-4 py-2">{entry.value}</td>
-                          <td className="px-4 py-2">{projectName}</td>
-                          <td className="px-4 py-2">
-                            {entry.blocked ? (
-                              <span className="text-green-500">Blocked</span>
-                            ) : (
-                              <span className="text-red-500">Allowed</span>
-                            )}
-                          </td>
-                          <td className="px-4 py-2 text-gray-400 text-sm">
-                            {entry.createdAt ? formatDate(entry.createdAt) : 'N/A'}
-                          </td>
-                          <td className="px-4 py-2">
-                            <div className="flex gap-2">
-                              {entry.blocked ? (
-                                <button
-                                  onClick={() => toggleBlockStatus(entry.id)}
-                                  className="p-1.5 bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-500 hover:to-orange-500 text-white rounded-md transition-all"
-                                >
-                                  <ShieldOff size={16} />
-                                </button>
-                              ) : (
-                                <button
-                                  onClick={() => toggleBlockStatus(entry.id)}
-                                  className="p-1.5 bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-500 hover:to-teal-500 text-white rounded-md transition-all"
-                                >
-                                  <Shield size={16} />
-                                </button>
-                              )}
-                              <button
-                                onClick={() => handleEditEntry(entry)}
-                                className="p-1.5 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white rounded-md transition-all"
-                              >
-                                <Edit2 size={16} />
-                              </button>
-                              <button
-                                onClick={() => handleDeleteEntry(entry.id)}
-                                className="p-1.5 bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-500 hover:to-orange-500 text-white rounded-md transition-all"
-                              >
-                                <Trash2 size={16} />
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                </tbody>
-              </table>
-              <div className="flex justify-center items-center gap-4 p-4 border-t border-gray-700">
-                <button
-                  onClick={() => setCurrentPage(prev => Math.max(0, prev - 1))}
-                  disabled={currentPage === 0}
-                  className={`px-3 py-1 bg-cyan-500/20 text-cyan-400 rounded hover:bg-cyan-500/30 transition-colors font-mono text-sm ${
-                    currentPage === 0 ? 'opacity-50 cursor-not-allowed' : ''
-                  }`}
-                >
-                  Previous
-                </button>
-                <span className="text-gray-400 font-mono text-sm">
-                  Page {currentPage + 1} of {Math.ceil(filteredEntries.length / 20)}
-                </span>
-                <button
-                  onClick={() => setCurrentPage(prev => Math.min(Math.ceil(filteredEntries.length / 20) - 1, prev + 1))}
-                  disabled={currentPage >= Math.ceil(filteredEntries.length / 20) - 1}
-                  className={`px-3 py-1 bg-cyan-500/20 text-cyan-400 rounded hover:bg-cyan-500/30 transition-colors font-mono text-sm ${
-                    currentPage >= Math.ceil(filteredEntries.length / 20) - 1 ? 'opacity-50 cursor-not-allowed' : ''
-                  }`}
-                >
-                  Next
-                </button>
-              </div>
+
+            <div className="mt-4 text-right">
+              <button
+                onClick={isBatchMode ? handleBatchEntry : handleAddEntry}
+                className="px-5 py-2 bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-500 hover:to-teal-500 text-white rounded-md font-medium transition-all flex items-center gap-2 ml-auto"
+              >
+                <Plus size={18} />
+                {isBatchMode ? 'Add Batch' : 'Add Entry'}
+              </button>
             </div>
-          </>
+          </div>
         )}
+        
+        {/* Entries List */}
+        <div className="bg-gray-800/50 border border-gray-700/80 rounded-lg p-4">
+          <div className="flex justify-between items-center mb-3">
+            <h2 className="text-lg font-medium text-cyan-400">IP & DNS Entries</h2>
+            {selectedEntries.size > 0 && (
+              <div className="flex gap-2">
+                <button
+                  onClick={handleBulkBlock}
+                  className="px-3 py-1.5 bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-500 hover:to-teal-500 text-white rounded-md font-medium transition-all flex items-center gap-1.5"
+                >
+                  <Shield size={16} />
+                  Block Selected ({selectedEntries.size})
+                </button>
+              </div>
+            )}
+          </div>
+          <table className="w-full text-left">
+            <thead>
+              <tr>
+                <th className="px-4 py-2">
+                  <input
+                    type="checkbox"
+                    onChange={(e) => handleSelectAll(e.target.checked)}
+                    checked={filteredEntries.length > 0 && selectedEntries.size === filteredEntries.length}
+                    className="rounded border-gray-700 text-cyan-500 focus:ring-cyan-500/50 bg-gray-900/80"
+                  />
+                </th>
+                <th className="px-4 py-2">Type</th>
+                <th className="px-4 py-2">Value</th>
+                <th className="px-4 py-2">Project</th>
+                <th className="px-4 py-2">Status</th>
+                <th 
+                  className="px-4 py-2 cursor-pointer hover:text-cyan-400 transition-colors"
+                  onClick={() => requestSort('createdAt')}
+                >
+                  <div className="flex items-center gap-1">
+                    Created At
+                    {sortConfig.key === 'createdAt' && (
+                      <ChevronDown 
+                        size={16} 
+                        className={`transition-transform ${sortConfig.direction === 'asc' ? 'rotate-180' : ''}`}
+                      />
+                    )}
+                  </div>
+                </th>
+                <th className="px-4 py-2">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredEntries
+                .slice(currentPage * 20, (currentPage + 1) * 20)
+                .map((entry) => {
+                  const projectName = getProjectDisplayName(entry.tenant);
+                  
+                  return (
+                    <tr key={entry.id} className="border-t border-gray-700">
+                      <td className="px-4 py-2">
+                        <input
+                          type="checkbox"
+                          checked={selectedEntries.has(entry.id)}
+                          onChange={(e) => handleSelectEntry(entry.id, e.target.checked)}
+                          className="rounded border-gray-700 text-cyan-500 focus:ring-cyan-500/50 bg-gray-900/80"
+                        />
+                      </td>
+                      <td className="px-4 py-2">{entry.type}</td>
+                      <td className="px-4 py-2">{entry.value}</td>
+                      <td className="px-4 py-2">{projectName}</td>
+                      <td className="px-4 py-2">
+                        {entry.blocked ? (
+                          <span className="text-green-500">Blocked</span>
+                        ) : (
+                          <span className="text-red-500">Allowed</span>
+                        )}
+                      </td>
+                      <td className="px-4 py-2 text-gray-400 text-sm">
+                        {entry.createdAt ? formatDate(entry.createdAt) : 'N/A'}
+                      </td>
+                      <td className="px-4 py-2">
+                        <div className="flex gap-2">
+                          {entry.blocked ? (
+                            <button
+                              onClick={() => toggleBlockStatus(entry.id)}
+                              className="p-1.5 bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-500 hover:to-orange-500 text-white rounded-md transition-all"
+                            >
+                              <ShieldOff size={16} />
+                            </button>
+                          ) : (
+                            <button
+                              onClick={() => toggleBlockStatus(entry.id)}
+                              className="p-1.5 bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-500 hover:to-teal-500 text-white rounded-md transition-all"
+                            >
+                              <Shield size={16} />
+                            </button>
+                          )}
+                          <button
+                            onClick={() => handleEditEntry(entry)}
+                            className="p-1.5 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white rounded-md transition-all"
+                          >
+                            <Edit2 size={16} />
+                          </button>
+                          <button
+                            onClick={() => handleDeleteEntry(entry.id)}
+                            className="p-1.5 bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-500 hover:to-orange-500 text-white rounded-md transition-all"
+                          >
+                            <Trash2 size={16} />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+            </tbody>
+          </table>
+          <div className="flex justify-center items-center gap-4 p-4 border-t border-gray-700">
+            <button
+              onClick={() => setCurrentPage(prev => Math.max(0, prev - 1))}
+              disabled={currentPage === 0}
+              className={`px-3 py-1 bg-cyan-500/20 text-cyan-400 rounded hover:bg-cyan-500/30 transition-colors font-mono text-sm ${
+                currentPage === 0 ? 'opacity-50 cursor-not-allowed' : ''
+              }`}
+            >
+              Previous
+            </button>
+            <span className="text-gray-400 font-mono text-sm">
+              Page {currentPage + 1} of {Math.ceil(filteredEntries.length / 20)}
+            </span>
+            <button
+              onClick={() => setCurrentPage(prev => Math.min(Math.ceil(filteredEntries.length / 20) - 1, prev + 1))}
+              disabled={currentPage >= Math.ceil(filteredEntries.length / 20) - 1}
+              className={`px-3 py-1 bg-cyan-500/20 text-cyan-400 rounded hover:bg-cyan-500/30 transition-colors font-mono text-sm ${
+                currentPage >= Math.ceil(filteredEntries.length / 20) - 1 ? 'opacity-50 cursor-not-allowed' : ''
+              }`}
+            >
+              Next
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* Add Action Confirmation Modal */}

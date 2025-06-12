@@ -477,29 +477,27 @@ export default function Reports() {
           )}
         </div>
 
-        {isLoading ? (
-          <div className="min-h-screen p-8 bg-gray-900 text-gray-100">
-            <div className="max-w-7xl mx-auto">
-              <div className="flex flex-col justify-center items-center h-64 space-y-6">
-                <div className="relative">
-                  <div className="w-24 h-24 border-4 border-cyan-500 rounded-full animate-spin border-t-transparent"></div>
-                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                    <div className="w-16 h-16 border-4 border-emerald-500 rounded-full animate-spin border-b-transparent"></div>
-                  </div>
-                </div>
-                <div className="text-center space-y-2">
-                  <div className="text-cyan-500 font-mono text-lg animate-pulse">Loading Security Reports</div>
-                  <div className="text-gray-400 text-sm font-mono">Analyzing Threat Data...</div>
-                  <div className="flex space-x-2 justify-center">
-                    <div className="w-2 h-2 bg-cyan-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-                    <div className="w-2 h-2 bg-emerald-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-                    <div className="w-2 h-2 bg-cyan-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
-                  </div>
-                </div>
+        {isLoading && (
+          <div className="fixed inset-0 z-50 bg-gray-900/80 backdrop-blur-sm flex flex-col justify-center items-center">
+            <div className="relative">
+              <div className="w-24 h-24 border-4 border-cyan-500 rounded-full animate-spin border-t-transparent"></div>
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                <div className="w-16 h-16 border-4 border-emerald-500 rounded-full animate-spin border-b-transparent"></div>
+              </div>
+            </div>
+            <div className="text-center space-y-2 mt-6">
+              <div className="text-cyan-500 font-mono text-lg animate-pulse">Loading Reports Data</div>
+              <div className="text-gray-400 text-sm font-mono">Analyzing Security Reports...</div>
+              <div className="flex space-x-2 justify-center">
+                <div className="w-2 h-2 bg-cyan-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                <div className="w-2 h-2 bg-emerald-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                <div className="w-2 h-2 bg-cyan-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
               </div>
             </div>
           </div>
-        ) : (
+        )}
+
+        {reportData && (
           <>
             {/* Summary Statistics Cards */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
