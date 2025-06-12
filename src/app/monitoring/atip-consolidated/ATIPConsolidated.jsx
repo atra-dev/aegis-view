@@ -607,71 +607,72 @@ export default function ATIPConsolidated() {
         </div>
       )}
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex justify-between items-center mb-4">
-            <h1 className="text-3xl font-bold text-cyan-400 font-mono">
-              ATIP Consolidated Malicious Domains
-            </h1>
-            <div className="flex gap-2">
-              <button
-                onClick={() => setShowSearchModal(true)}
-                className="px-3 py-1.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white rounded-md font-medium flex items-center gap-2 transition-all"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-                Search Domains
-              </button>
-              <button
-                onClick={exportToCSV}
-                className="px-3 py-1.5 bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-500 hover:to-teal-500 text-white rounded-md font-medium flex items-center gap-2 transition-all"
-              >
-                <Download size={16} />
-                Export CSV
-              </button>
-              <button
-                onClick={() => setShowEntryModal(true)}
-                className="px-3 py-1.5 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white rounded-md font-medium flex items-center gap-2 transition-all"
-              >
-                <Plus size={16} />
-                Add ATIP
-              </button>
-            </div>
-          </div>
-          
-          {/* Filters */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        {isLoading ? (
+          <div className="min-h-[60vh] flex flex-col justify-center items-center">
             <div className="relative">
-              <select
-                value={selectedTenant}
-                onChange={(e) => setSelectedTenant(e.target.value)}
-                className="w-full bg-gray-800 text-gray-300 border border-cyan-500/20 rounded-lg p-2.5 font-mono appearance-none pr-8 focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/30 transition-all"
-              >
-                <option value="all">All Projects</option>
-                <option value="MWELL">Project Chiron</option>
-                <option value="SiyCha">Project Orion</option>
-                <option value="MPIW">Project Hunt</option>
-                <option value="NIKI">Project NIKI</option>
-                <option value="Cantilan">Project Atlas</option>
-              </select>
-              <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
+              <div className="w-24 h-24 border-4 border-cyan-500 rounded-full animate-spin border-t-transparent"></div>
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                <div className="w-16 h-16 border-4 border-emerald-500 rounded-full animate-spin border-b-transparent"></div>
               </div>
             </div>
-
-            <div className="flex gap-4">
-              <div className="relative flex-1">
+            <div className="text-center space-y-2 mt-6">
+              <div className="text-cyan-500 font-mono text-lg animate-pulse">Loading ATIP Data</div>
+              <div className="text-gray-400 text-sm font-mono">Analyzing Malicious Domains...</div>
+              <div className="flex space-x-2 justify-center">
+                <div className="w-2 h-2 bg-cyan-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                <div className="w-2 h-2 bg-emerald-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                <div className="w-2 h-2 bg-cyan-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="mb-8">
+            {/* Header */}
+            <div className="flex justify-between items-center mb-4">
+              <h1 className="text-3xl font-bold text-cyan-400 font-mono">
+                ATIP Consolidated Malicious Domains
+              </h1>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setShowSearchModal(true)}
+                  className="px-3 py-1.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white rounded-md font-medium flex items-center gap-2 transition-all"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                  Search Domains
+                </button>
+                <button
+                  onClick={exportToCSV}
+                  className="px-3 py-1.5 bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-500 hover:to-teal-500 text-white rounded-md font-medium flex items-center gap-2 transition-all"
+                >
+                  <Download size={16} />
+                  Export CSV
+                </button>
+                <button
+                  onClick={() => setShowEntryModal(true)}
+                  className="px-3 py-1.5 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white rounded-md font-medium flex items-center gap-2 transition-all"
+                >
+                  <Plus size={16} />
+                  Add ATIP
+                </button>
+              </div>
+            </div>
+            
+            {/* Filters */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              <div className="relative">
                 <select
-                  value={selectedDateRange}
-                  onChange={(e) => setSelectedDateRange(e.target.value)}
+                  value={selectedTenant}
+                  onChange={(e) => setSelectedTenant(e.target.value)}
                   className="w-full bg-gray-800 text-gray-300 border border-cyan-500/20 rounded-lg p-2.5 font-mono appearance-none pr-8 focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/30 transition-all"
                 >
-                  <option value="1D">Daily View</option>
-                  <option value="7D">Weekly View</option>
-                  <option value="1M">Monthly View</option>
+                  <option value="all">All Projects</option>
+                  <option value="MWELL">Project Chiron</option>
+                  <option value="SiyCha">Project Orion</option>
+                  <option value="MPIW">Project Hunt</option>
+                  <option value="NIKI">Project NIKI</option>
+                  <option value="Cantilan">Project Atlas</option>
                 </select>
                 <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
                   <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -680,369 +681,474 @@ export default function ATIPConsolidated() {
                 </div>
               </div>
 
-              {selectedDateRange === '1D' && (
+              <div className="flex gap-4">
                 <div className="relative flex-1">
-                  <input
-                    type="date"
-                    value={selectedDate}
-                    onChange={(e) => setSelectedDate(e.target.value)}
-                    className="w-full bg-gray-800 text-gray-300 border border-cyan-500/20 rounded-lg p-2.5 font-mono focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/30 transition-all"
-                  />
-                </div>
-              )}
-
-              {selectedDateRange === '1M' && (
-                <div className="relative flex-1">
-                  <input
-                    type="month"
-                    value={selectedMonth}
-                    onChange={(e) => setSelectedMonth(e.target.value)}
-                    className="w-full bg-gray-800 text-gray-300 border border-cyan-500/20 rounded-lg p-2.5 font-mono focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/30 transition-all"
-                  />
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Search Modal */}
-          {showSearchModal && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-              <div className="bg-gray-800 rounded-lg p-6 max-w-6xl w-full mx-4 max-h-[90vh] overflow-hidden flex flex-col">
-                <div className="flex justify-between items-center mb-6">
-                  <h3 className="text-cyan-400 font-mono text-xl flex items-center gap-2">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                    Search Domains
-                  </h3>
-                  <button 
-                    onClick={() => {
-                      setShowSearchModal(false)
-                      setSearchQuery('')
-                    }}
-                    className="text-gray-400 hover:text-gray-300"
+                  <select
+                    value={selectedDateRange}
+                    onChange={(e) => setSelectedDateRange(e.target.value)}
+                    className="w-full bg-gray-800 text-gray-300 border border-cyan-500/20 rounded-lg p-2.5 font-mono appearance-none pr-8 focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/30 transition-all"
                   >
-                    <X size={24} />
-                  </button>
+                    <option value="1D">Daily View</option>
+                    <option value="7D">Weekly View</option>
+                    <option value="1M">Monthly View</option>
+                  </select>
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                    <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
                 </div>
 
-                <div className="mb-6">
-                  <div className="relative">
+                {selectedDateRange === '1D' && (
+                  <div className="relative flex-1">
                     <input
-                      type="text"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      placeholder="Search by domain, IP, or connection attempts..."
-                      className="w-full bg-gray-900/80 text-gray-300 border border-cyan-500/20 rounded-lg p-3 pl-10 font-mono focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/30 transition-all"
+                      type="date"
+                      value={selectedDate}
+                      onChange={(e) => setSelectedDate(e.target.value)}
+                      className="w-full bg-gray-800 text-gray-300 border border-cyan-500/20 rounded-lg p-2.5 font-mono focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/30 transition-all"
                     />
-                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                  </div>
+                )}
+
+                {selectedDateRange === '1M' && (
+                  <div className="relative flex-1">
+                    <input
+                      type="month"
+                      value={selectedMonth}
+                      onChange={(e) => setSelectedMonth(e.target.value)}
+                      className="w-full bg-gray-800 text-gray-300 border border-cyan-500/20 rounded-lg p-2.5 font-mono focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/30 transition-all"
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Search Modal */}
+            {showSearchModal && (
+              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div className="bg-gray-800 rounded-lg p-6 max-w-6xl w-full mx-4 max-h-[90vh] overflow-hidden flex flex-col">
+                  <div className="flex justify-between items-center mb-6">
+                    <h3 className="text-cyan-400 font-mono text-xl flex items-center gap-2">
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                       </svg>
+                      Search Domains
+                    </h3>
+                    <button 
+                      onClick={() => {
+                        setShowSearchModal(false)
+                        setSearchQuery('')
+                      }}
+                      className="text-gray-400 hover:text-gray-300"
+                    >
+                      <X size={24} />
+                    </button>
+                  </div>
+
+                  <div className="mb-6">
+                    <div className="relative">
+                      <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder="Search by domain, IP, or connection attempts..."
+                        className="w-full bg-gray-900/80 text-gray-300 border border-cyan-500/20 rounded-lg p-3 pl-10 font-mono focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/30 transition-all"
+                      />
+                      <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                      </div>
+                      {searchQuery && (
+                        <button
+                          onClick={() => setSearchQuery('')}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-300"
+                        >
+                          <X size={18} />
+                        </button>
+                      )}
                     </div>
-                    {searchQuery && (
-                      <button
-                        onClick={() => setSearchQuery('')}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-300"
-                      >
-                        <X size={18} />
-                      </button>
+                  </div>
+
+                  <div className="flex-1 overflow-y-auto">
+                    {searchQuery ? (
+                      <div className="bg-gray-800/50 rounded-lg border border-cyan-500/20 overflow-hidden">
+                        <div className="overflow-x-auto">
+                          <table className="w-full text-sm text-gray-300">
+                            <thead className="bg-gray-700/50 sticky top-0">
+                              <tr className="font-mono">
+                                <th className="px-4 py-3 text-left">Domain</th>
+                                <th className="px-4 py-3 text-left">Total Connection Attempts</th>
+                                <th className="px-4 py-3 text-left">Unique Internal IPs</th>
+                                <th className="px-4 py-3 text-left">Affected Projects</th>
+                                <th className="px-4 py-3 text-left">First Seen</th>
+                                <th className="px-4 py-3 text-left">Last Seen</th>
+                                <th className="px-4 py-3 text-left">Actions</th>
+                              </tr>
+                            </thead>
+                            <tbody className="divide-y divide-gray-700">
+                              {Object.values(groupedSearchResults).map((result) => (
+                                <tr key={result.domain} className="hover:bg-gray-700/30">
+                                  <td className="px-4 py-3 font-mono whitespace-normal break-all">
+                                    {result.domain}
+                                  </td>
+                                  <td className="px-4 py-3 font-mono">
+                                    {result.totalAttempts.toLocaleString()}
+                                  </td>
+                                  <td className="px-4 py-3 font-mono">
+                                    {result.uniqueIPs.size}
+                                  </td>
+                                  <td className="px-4 py-3 font-mono">
+                                    {Array.from(result.tenants).map(tenant => 
+                                      tenant === 'SiyCha' ? 'Project Orion' :
+                                      tenant === 'MWELL' ? 'Project Chiron' :
+                                      tenant === 'MPIW' ? 'Project Hunt' :
+                                      tenant === 'NIKI' ? 'Project NIKI' :
+                                      tenant === 'Cantilan' ? 'Project Atlas' :
+                                      tenant
+                                    ).join(', ')}
+                                  </td>
+                                  <td className="px-4 py-3 font-mono">
+                                    {new Date(Math.min(...Array.from(result.dates))).toLocaleDateString()}
+                                  </td>
+                                  <td className="px-4 py-3 font-mono">
+                                    {new Date(Math.max(...Array.from(result.dates))).toLocaleDateString()}
+                                  </td>
+                                  <td className="px-4 py-3">
+                                    <div className="flex space-x-3">
+                                      <button 
+                                        className="text-cyan-400 hover:text-cyan-300"
+                                        onClick={() => {
+                                          handleViewDetails(result.entries)
+                                          setShowSearchModal(false)
+                                        }}
+                                        title="View Details"
+                                      >
+                                        <Eye size={18} />
+                                      </button>
+                                      <button 
+                                        className="text-yellow-400 hover:text-yellow-300"
+                                        onClick={() => {
+                                          handleEditEntry(result.entries)
+                                          setShowSearchModal(false)
+                                        }}
+                                        title="Edit Entries"
+                                      >
+                                        <Edit2 size={18} />
+                                      </button>
+                                      <button 
+                                        className="text-red-400 hover:text-red-300"
+                                        onClick={() => {
+                                          handleBatchDelete(result.entries)
+                                          setShowSearchModal(false)
+                                        }}
+                                        title="Delete Entries"
+                                        disabled={isLoading}
+                                      >
+                                        <Trash2 size={18} />
+                                      </button>
+                                    </div>
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                        {Object.keys(groupedSearchResults).length === 0 && (
+                          <div className="p-8 text-center text-gray-400 font-mono">
+                            No domains found matching your search criteria
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="text-center text-gray-400 font-mono p-8">
+                        Enter a search query to find domains
+                      </div>
                     )}
                   </div>
                 </div>
+              </div>
+            )}
 
-                <div className="flex-1 overflow-y-auto">
-                  {searchQuery ? (
-                    <div className="bg-gray-800/50 rounded-lg border border-cyan-500/20 overflow-hidden">
-                      <div className="overflow-x-auto">
-                        <table className="w-full text-sm text-gray-300">
-                          <thead className="bg-gray-700/50 sticky top-0">
-                            <tr className="font-mono">
-                              <th className="px-4 py-3 text-left">Domain</th>
-                              <th className="px-4 py-3 text-left">Total Connection Attempts</th>
-                              <th className="px-4 py-3 text-left">Unique Internal IPs</th>
-                              <th className="px-4 py-3 text-left">Affected Projects</th>
-                              <th className="px-4 py-3 text-left">First Seen</th>
-                              <th className="px-4 py-3 text-left">Last Seen</th>
-                              <th className="px-4 py-3 text-left">Actions</th>
-                            </tr>
-                          </thead>
-                          <tbody className="divide-y divide-gray-700">
-                            {Object.values(groupedSearchResults).map((result) => (
-                              <tr key={result.domain} className="hover:bg-gray-700/30">
-                                <td className="px-4 py-3 font-mono whitespace-normal break-all">
-                                  {result.domain}
-                                </td>
-                                <td className="px-4 py-3 font-mono">
-                                  {result.totalAttempts.toLocaleString()}
-                                </td>
-                                <td className="px-4 py-3 font-mono">
-                                  {result.uniqueIPs.size}
-                                </td>
-                                <td className="px-4 py-3 font-mono">
-                                  {Array.from(result.tenants).map(tenant => 
-                                    tenant === 'SiyCha' ? 'Project Orion' :
-                                    tenant === 'MWELL' ? 'Project Chiron' :
-                                    tenant === 'MPIW' ? 'Project Hunt' :
-                                    tenant === 'NIKI' ? 'Project NIKI' :
-                                    tenant === 'Cantilan' ? 'Project Atlas' :
-                                    tenant
-                                  ).join(', ')}
-                                </td>
-                                <td className="px-4 py-3 font-mono">
-                                  {new Date(Math.min(...Array.from(result.dates))).toLocaleDateString()}
-                                </td>
-                                <td className="px-4 py-3 font-mono">
-                                  {new Date(Math.max(...Array.from(result.dates))).toLocaleDateString()}
-                                </td>
-                                <td className="px-4 py-3">
-                                  <div className="flex space-x-3">
-                                    <button 
-                                      className="text-cyan-400 hover:text-cyan-300"
-                                      onClick={() => {
-                                        handleViewDetails(result.entries)
-                                        setShowSearchModal(false)
-                                      }}
-                                      title="View Details"
-                                    >
-                                      <Eye size={18} />
-                                    </button>
-                                    <button 
-                                      className="text-yellow-400 hover:text-yellow-300"
-                                      onClick={() => {
-                                        handleEditEntry(result.entries)
-                                        setShowSearchModal(false)
-                                      }}
-                                      title="Edit Entries"
-                                    >
-                                      <Edit2 size={18} />
-                                    </button>
-                                    <button 
-                                      className="text-red-400 hover:text-red-300"
-                                      onClick={() => {
-                                        handleBatchDelete(result.entries)
-                                        setShowSearchModal(false)
-                                      }}
-                                      title="Delete Entries"
-                                      disabled={isLoading}
-                                    >
-                                      <Trash2 size={18} />
-                                    </button>
-                                  </div>
-                                </td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                      {Object.keys(groupedSearchResults).length === 0 && (
-                        <div className="p-8 text-center text-gray-400 font-mono">
-                          No domains found matching your search criteria
-                        </div>
-                      )}
+            {/* Stats Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+              <div className="bg-gradient-to-br from-gray-800/50 to-gray-800/30 rounded-lg p-6 border border-cyan-500/20 shadow-lg hover:shadow-cyan-500/5 transition-all">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="p-2 bg-yellow-500/10 rounded-lg">
+                    <Shield className="w-5 h-5 text-yellow-400" />
+                  </div>
+                  <h3 className="text-yellow-400 text-sm font-mono">Total Malicious Domains</h3>
+                </div>
+                <p className="text-3xl font-bold text-gray-200">{stats.totalMaliciousDomains}</p>
+              </div>
+              <div className="bg-gradient-to-br from-gray-800/50 to-gray-800/30 rounded-lg p-6 border border-cyan-500/20 shadow-lg hover:shadow-cyan-500/5 transition-all">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="p-2 bg-blue-500/10 rounded-lg">
+                    <RefreshCw className="w-5 h-5 text-blue-400" />
+                  </div>
+                  <h3 className="text-blue-400 text-sm font-mono">Total Connection Attempts</h3>
+                </div>
+                <p className="text-3xl font-bold text-gray-200">{stats.totalConnectionAttempts}</p>
+              </div>
+            </div>
+
+            {/* Quick Summary Cards */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+              <div className="bg-gray-800/50 rounded-lg p-4 border border-cyan-500/20">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-cyan-400 font-mono">Trend Summary</h3>
+                  <button className="text-yellow-400 hover:text-yellow-300 text-sm font-mono">
+                    View Details
+                  </button>
+                </div>
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-400 font-mono">Last 24 Hours</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-gray-300 font-mono">{trendSummary.last24Hours.count}</span>
+                      <span className={`font-mono ${trendSummary.last24Hours.percentage >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                        {trendSummary.last24Hours.percentage >= 0 ? '+' : ''}{trendSummary.last24Hours.percentage.toFixed(1)}%
+                      </span>
                     </div>
-                  ) : (
-                    <div className="text-center text-gray-400 font-mono p-8">
-                      Enter a search query to find domains
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-400 font-mono">Last 7 Days</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-gray-300 font-mono">{trendSummary.last7Days.count}</span>
+                      <span className={`font-mono ${trendSummary.last7Days.percentage >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                        {trendSummary.last7Days.percentage >= 0 ? '+' : ''}{trendSummary.last7Days.percentage.toFixed(1)}%
+                      </span>
                     </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-            <div className="bg-gradient-to-br from-gray-800/50 to-gray-800/30 rounded-lg p-6 border border-cyan-500/20 shadow-lg hover:shadow-cyan-500/5 transition-all">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="p-2 bg-yellow-500/10 rounded-lg">
-                  <Shield className="w-5 h-5 text-yellow-400" />
-                </div>
-                <h3 className="text-yellow-400 text-sm font-mono">Total Malicious Domains</h3>
-              </div>
-              <p className="text-3xl font-bold text-gray-200">{stats.totalMaliciousDomains}</p>
-            </div>
-            <div className="bg-gradient-to-br from-gray-800/50 to-gray-800/30 rounded-lg p-6 border border-cyan-500/20 shadow-lg hover:shadow-cyan-500/5 transition-all">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="p-2 bg-blue-500/10 rounded-lg">
-                  <RefreshCw className="w-5 h-5 text-blue-400" />
-                </div>
-                <h3 className="text-blue-400 text-sm font-mono">Total Connection Attempts</h3>
-              </div>
-              <p className="text-3xl font-bold text-gray-200">{stats.totalConnectionAttempts}</p>
-            </div>
-          </div>
-
-          {/* Quick Summary Cards */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-            <div className="bg-gray-800/50 rounded-lg p-4 border border-cyan-500/20">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-cyan-400 font-mono">Trend Summary</h3>
-                <button className="text-yellow-400 hover:text-yellow-300 text-sm font-mono">
-                  View Details
-                </button>
-              </div>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-400 font-mono">Last 24 Hours</span>
-                  <div className="flex items-center gap-2">
-                    <span className="text-gray-300 font-mono">{trendSummary.last24Hours.count}</span>
-                    <span className={`font-mono ${trendSummary.last24Hours.percentage >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                      {trendSummary.last24Hours.percentage >= 0 ? '+' : ''}{trendSummary.last24Hours.percentage.toFixed(1)}%
-                    </span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-400 font-mono">Last 30 Days</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-gray-300 font-mono">{trendSummary.last30Days.count}</span>
+                      <span className={`font-mono ${trendSummary.last30Days.percentage >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                        {trendSummary.last30Days.percentage >= 0 ? '+' : ''}{trendSummary.last30Days.percentage.toFixed(1)}%
+                      </span>
+                    </div>
                   </div>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-400 font-mono">Last 7 Days</span>
-                  <div className="flex items-center gap-2">
-                    <span className="text-gray-300 font-mono">{trendSummary.last7Days.count}</span>
-                    <span className={`font-mono ${trendSummary.last7Days.percentage >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                      {trendSummary.last7Days.percentage >= 0 ? '+' : ''}{trendSummary.last7Days.percentage.toFixed(1)}%
-                    </span>
-                  </div>
+              </div>
+              
+              <div className="bg-gray-800/50 rounded-lg p-4 border border-cyan-500/20">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-cyan-400 font-mono">Tenant Distribution</h3>
+                  <button className="text-yellow-400 hover:text-yellow-300 text-sm font-mono">
+                    View Details
+                  </button>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-400 font-mono">Last 30 Days</span>
-                  <div className="flex items-center gap-2">
-                    <span className="text-gray-300 font-mono">{trendSummary.last30Days.count}</span>
-                    <span className={`font-mono ${trendSummary.last30Days.percentage >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                      {trendSummary.last30Days.percentage >= 0 ? '+' : ''}{trendSummary.last30Days.percentage.toFixed(1)}%
-                    </span>
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-400 font-mono">Project Chiron</span>
+                    <span className="text-yellow-400 font-mono">{tenantDistribution['MWELL']}%</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-400 font-mono">Project Orion</span>
+                    <span className="text-yellow-400 font-mono">{tenantDistribution['SiyCha']}%</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-400 font-mono">Project Hunt</span>
+                    <span className="text-yellow-400 font-mono">{tenantDistribution['MPIW']}%</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-400 font-mono">Project NIKI</span>
+                    <span className="text-yellow-400 font-mono">{tenantDistribution['NIKI']}%</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-400 font-mono">Project Atlas</span>
+                    <span className="text-yellow-400 font-mono">{tenantDistribution['Cantilan']}%</span>
                   </div>
                 </div>
               </div>
             </div>
-            
-            <div className="bg-gray-800/50 rounded-lg p-4 border border-cyan-500/20">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-cyan-400 font-mono">Tenant Distribution</h3>
-                <button className="text-yellow-400 hover:text-yellow-300 text-sm font-mono">
-                  View Details
-                </button>
-              </div>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-400 font-mono">Project Chiron</span>
-                  <span className="text-yellow-400 font-mono">{tenantDistribution['MWELL']}%</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-400 font-mono">Project Orion</span>
-                  <span className="text-yellow-400 font-mono">{tenantDistribution['SiyCha']}%</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-400 font-mono">Project Hunt</span>
-                  <span className="text-yellow-400 font-mono">{tenantDistribution['MPIW']}%</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-400 font-mono">Project NIKI</span>
-                  <span className="text-yellow-400 font-mono">{tenantDistribution['NIKI']}%</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-400 font-mono">Project Atlas</span>
-                  <span className="text-yellow-400 font-mono">{tenantDistribution['Cantilan']}%</span>
-                </div>
-              </div>
-            </div>
-          </div>
 
-          {/* Detailed Table */}
-          <div className="bg-gray-800/50 rounded-lg border border-cyan-500/20 overflow-hidden">
-            <div 
-              className="overflow-x-auto scrollbar-thin"
-              onScroll={handleHorizontalScroll}
-            >
-              <div className={`scroll-shadow-left ${showHorizontalScrollShadow.left ? 'opacity-100' : 'opacity-0'}`} />
-              <div className={`scroll-shadow-right ${showHorizontalScrollShadow.right ? 'opacity-100' : 'opacity-0'}`} />
-              <table className="w-full text-sm text-gray-300">
-                <thead className="bg-gray-700/50">
-                  <tr className="font-mono">
-                    <th className="px-4 py-3 text-left">Date</th>
-                    <th className="px-4 py-3 text-left">Total Malicious Domains</th>
-                    <th className="px-4 py-3 text-left">Total Connection Attempts</th>
-                    <th className="px-4 py-3 text-left">Total Unique IPs</th>
-                    <th className="px-4 py-3 text-left">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-700">
-                  {sortedGroups
-                    .slice(currentPage * 20, (currentPage + 1) * 20)
-                    .map((group) => (
-                    <tr key={group.date} className="hover:bg-gray-700/30">
-                      <td className="px-4 py-3 font-mono">
-                        {new Date(group.date).toLocaleDateString()}
-                      </td>
-                      <td className="px-4 py-3 font-mono">{group.totals.domains}</td>
-                      <td className="px-4 py-3 font-mono">{group.totals.attempts}</td>
-                      <td className="px-4 py-3 font-mono">{group.totals.uniqueIPs.size}</td>
-                      <td className="px-4 py-3">
-                        <div className="flex space-x-3">
-                          <button 
-                            className="text-cyan-400 hover:text-cyan-300"
-                            onClick={() => handleViewDetails(group.entries)}
-                            title="View Details"
-                          >
-                            <Eye size={18} />
-                          </button>
-                          <button 
-                            className="text-yellow-400 hover:text-yellow-300"
-                            onClick={() => handleEditEntry(group.entries)}
-                            title="Edit Entries"
-                          >
-                            <Edit2 size={18} />
-                          </button>
-                          <button 
-                            className="text-red-400 hover:text-red-300"
-                            onClick={() => handleBatchDelete(group.entries)}
-                            title="Delete Entries"
-                            disabled={isLoading}
-                          >
-                            <Trash2 size={18} />
-                          </button>
-                        </div>
-                      </td>
+            {/* Detailed Table */}
+            <div className="bg-gray-800/50 rounded-lg border border-cyan-500/20 overflow-hidden">
+              <div 
+                className="overflow-x-auto scrollbar-thin"
+                onScroll={handleHorizontalScroll}
+              >
+                <div className={`scroll-shadow-left ${showHorizontalScrollShadow.left ? 'opacity-100' : 'opacity-0'}`} />
+                <div className={`scroll-shadow-right ${showHorizontalScrollShadow.right ? 'opacity-100' : 'opacity-0'}`} />
+                <table className="w-full text-sm text-gray-300">
+                  <thead className="bg-gray-700/50">
+                    <tr className="font-mono">
+                      <th className="px-4 py-3 text-left">Date</th>
+                      <th className="px-4 py-3 text-left">Total Malicious Domains</th>
+                      <th className="px-4 py-3 text-left">Total Connection Attempts</th>
+                      <th className="px-4 py-3 text-left">Total Unique IPs</th>
+                      <th className="px-4 py-3 text-left">Actions</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <div className="flex justify-center items-center gap-4 p-4 border-t border-gray-700">
-              <button
-                onClick={() => setCurrentPage(prev => Math.max(0, prev - 1))}
-                disabled={currentPage === 0}
-                className={`px-3 py-1 bg-cyan-500/20 text-cyan-400 rounded hover:bg-cyan-500/30 transition-colors font-mono text-sm ${
-                  currentPage === 0 ? 'opacity-50 cursor-not-allowed' : ''
-                }`}
-              >
-                Previous
-              </button>
-              <span className="text-gray-400 font-mono text-sm">
-                Page {currentPage + 1} of {Math.ceil(sortedGroups.length / 20)}
-              </span>
-              <button
-                onClick={() => setCurrentPage(prev => Math.min(Math.ceil(sortedGroups.length / 20) - 1, prev + 1))}
-                disabled={currentPage >= Math.ceil(sortedGroups.length / 20) - 1}
-                className={`px-3 py-1 bg-cyan-500/20 text-cyan-400 rounded hover:bg-cyan-500/30 transition-colors font-mono text-sm ${
-                  currentPage >= Math.ceil(sortedGroups.length / 20) - 1 ? 'opacity-50 cursor-not-allowed' : ''
-                }`}
-              >
-                Next
-              </button>
+                  </thead>
+                  <tbody className="divide-y divide-gray-700">
+                    {sortedGroups
+                      .slice(currentPage * 20, (currentPage + 1) * 20)
+                      .map((group) => (
+                      <tr key={group.date} className="hover:bg-gray-700/30">
+                        <td className="px-4 py-3 font-mono">
+                          {new Date(group.date).toLocaleDateString()}
+                        </td>
+                        <td className="px-4 py-3 font-mono">{group.totals.domains}</td>
+                        <td className="px-4 py-3 font-mono">{group.totals.attempts}</td>
+                        <td className="px-4 py-3 font-mono">{group.totals.uniqueIPs.size}</td>
+                        <td className="px-4 py-3">
+                          <div className="flex space-x-3">
+                            <button 
+                              className="text-cyan-400 hover:text-cyan-300"
+                              onClick={() => handleViewDetails(group.entries)}
+                              title="View Details"
+                            >
+                              <Eye size={18} />
+                            </button>
+                            <button 
+                              className="text-yellow-400 hover:text-yellow-300"
+                              onClick={() => handleEditEntry(group.entries)}
+                              title="Edit Entries"
+                            >
+                              <Edit2 size={18} />
+                            </button>
+                            <button 
+                              className="text-red-400 hover:text-red-300"
+                              onClick={() => handleBatchDelete(group.entries)}
+                              title="Delete Entries"
+                              disabled={isLoading}
+                            >
+                              <Trash2 size={18} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div className="flex justify-center items-center gap-4 p-4 border-t border-gray-700">
+                <button
+                  onClick={() => setCurrentPage(prev => Math.max(0, prev - 1))}
+                  disabled={currentPage === 0}
+                  className={`px-3 py-1 bg-cyan-500/20 text-cyan-400 rounded hover:bg-cyan-500/30 transition-colors font-mono text-sm ${
+                    currentPage === 0 ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
+                >
+                  Previous
+                </button>
+                <span className="text-gray-400 font-mono text-sm">
+                  Page {currentPage + 1} of {Math.ceil(sortedGroups.length / 20)}
+                </span>
+                <button
+                  onClick={() => setCurrentPage(prev => Math.min(Math.ceil(sortedGroups.length / 20) - 1, prev + 1))}
+                  disabled={currentPage >= Math.ceil(sortedGroups.length / 20) - 1}
+                  className={`px-3 py-1 bg-cyan-500/20 text-cyan-400 rounded hover:bg-cyan-500/30 transition-colors font-mono text-sm ${
+                    currentPage >= Math.ceil(sortedGroups.length / 20) - 1 ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
+                >
+                  Next
+                </button>
+              </div>
             </div>
           </div>
-        </div>
+        )}
+      </div>
 
-        {/* Entry Modal */}
-        {showEntryModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div 
-              className="bg-gray-800 rounded-lg p-6 max-w-4xl w-full mx-4 max-h-[80vh] overflow-y-auto scrollbar-thin"
-              onScroll={handleVerticalScroll}
-            >
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-cyan-400 font-mono text-xl">
-                  {selectedEntry ? 'Edit ATIP' : 'Add New ATIP'}
-                </h3>
-                <button 
+      {/* Entry Modal */}
+      {showEntryModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div 
+            className="bg-gray-800 rounded-lg p-6 max-w-4xl w-full mx-4 max-h-[80vh] overflow-y-auto scrollbar-thin"
+            onScroll={handleVerticalScroll}
+          >
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-cyan-400 font-mono text-xl">
+                {selectedEntry ? 'Edit ATIP' : 'Add New ATIP'}
+              </h3>
+              <button 
+                onClick={() => {
+                  setShowEntryModal(false)
+                  setSelectedEntry(null)
+                  setNewEntry({
+                    domain: '',
+                    attempts: '',
+                    ips: '',
+                    date: new Date().toISOString().split('T')[0],
+                    tenant: 'MWELL'
+                  })
+                }}
+                className="text-gray-400 hover:text-gray-300"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            <form onSubmit={handleEntrySubmit} className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                  <label className="block text-gray-300 mb-1">Date</label>
+                  <input
+                    type="date"
+                    value={newEntry.date}
+                    onChange={(e) => setNewEntry({ ...newEntry, date: e.target.value })}
+                    className="w-full px-3 py-2 bg-gray-900/80 border border-gray-700 rounded-md text-gray-300 focus:outline-none focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/50 transition-all font-mono"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-300 mb-1">Tenant</label>
+                  <select
+                    value={newEntry.tenant}
+                    onChange={(e) => setNewEntry({ ...newEntry, tenant: e.target.value })}
+                    className="w-full px-3 py-2 bg-gray-900/80 border border-gray-700 rounded-md text-gray-300 focus:outline-none focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/50 transition-all font-mono appearance-none"
+                    required
+                  >
+                    <option value="MWELL">Project Chiron</option>
+                    <option value="SiyCha">Project Orion</option>
+                    <option value="MPIW">Project Hunt</option>
+                    <option value="NIKI">Project NIKI</option>
+                    <option value="Cantilan">Project Atlas</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 gap-4">
+                <div>
+                  <label className="block text-gray-300 mb-1">Confirmed Malicious Domains</label>
+                  <textarea
+                    value={newEntry.domain}
+                    onChange={(e) => setNewEntry({ ...newEntry, domain: e.target.value })}
+                    placeholder="Enter domains (one per line)"
+                    rows={3}
+                    className="w-full px-3 py-2 bg-gray-900/80 border border-gray-700 rounded-md text-gray-300 focus:outline-none focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/50 transition-all font-mono"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-300 mb-1">Connection Attempts</label>
+                  <textarea
+                    value={newEntry.attempts}
+                    onChange={(e) => setNewEntry({ ...newEntry, attempts: e.target.value })}
+                    placeholder="Enter attempts (one per line)"
+                    rows={3}
+                    className="w-full px-3 py-2 bg-gray-900/80 border border-gray-700 rounded-md text-gray-300 focus:outline-none focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/50 transition-all font-mono"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-300 mb-1">Accessing Internal IPs</label>
+                  <textarea
+                    value={newEntry.ips}
+                    onChange={(e) => setNewEntry({ ...newEntry, ips: e.target.value })}
+                    placeholder="Enter IPs (one per line)"
+                    rows={3}
+                    className="w-full px-3 py-2 bg-gray-900/80 border border-gray-700 rounded-md text-gray-300 focus:outline-none focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/50 transition-all font-mono"
+                  />
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-2">
+                <button
+                  type="button"
                   onClick={() => {
                     setShowEntryModal(false)
                     setSelectedEntry(null)
@@ -1054,527 +1160,441 @@ export default function ATIPConsolidated() {
                       tenant: 'MWELL'
                     })
                   }}
-                  className="text-gray-400 hover:text-gray-300"
-                >
-                  <X size={24} />
-                </button>
-              </div>
-
-              <form onSubmit={handleEntrySubmit} className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                  <div>
-                    <label className="block text-gray-300 mb-1">Date</label>
-                    <input
-                      type="date"
-                      value={newEntry.date}
-                      onChange={(e) => setNewEntry({ ...newEntry, date: e.target.value })}
-                      className="w-full px-3 py-2 bg-gray-900/80 border border-gray-700 rounded-md text-gray-300 focus:outline-none focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/50 transition-all font-mono"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-gray-300 mb-1">Tenant</label>
-                    <select
-                      value={newEntry.tenant}
-                      onChange={(e) => setNewEntry({ ...newEntry, tenant: e.target.value })}
-                      className="w-full px-3 py-2 bg-gray-900/80 border border-gray-700 rounded-md text-gray-300 focus:outline-none focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/50 transition-all font-mono appearance-none"
-                      required
-                    >
-                      <option value="MWELL">Project Chiron</option>
-                      <option value="SiyCha">Project Orion</option>
-                      <option value="MPIW">Project Hunt</option>
-                      <option value="NIKI">Project NIKI</option>
-                      <option value="Cantilan">Project Atlas</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 gap-4">
-                  <div>
-                    <label className="block text-gray-300 mb-1">Confirmed Malicious Domains</label>
-                    <textarea
-                      value={newEntry.domain}
-                      onChange={(e) => setNewEntry({ ...newEntry, domain: e.target.value })}
-                      placeholder="Enter domains (one per line)"
-                      rows={3}
-                      className="w-full px-3 py-2 bg-gray-900/80 border border-gray-700 rounded-md text-gray-300 focus:outline-none focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/50 transition-all font-mono"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-gray-300 mb-1">Connection Attempts</label>
-                    <textarea
-                      value={newEntry.attempts}
-                      onChange={(e) => setNewEntry({ ...newEntry, attempts: e.target.value })}
-                      placeholder="Enter attempts (one per line)"
-                      rows={3}
-                      className="w-full px-3 py-2 bg-gray-900/80 border border-gray-700 rounded-md text-gray-300 focus:outline-none focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/50 transition-all font-mono"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-gray-300 mb-1">Accessing Internal IPs</label>
-                    <textarea
-                      value={newEntry.ips}
-                      onChange={(e) => setNewEntry({ ...newEntry, ips: e.target.value })}
-                      placeholder="Enter IPs (one per line)"
-                      rows={3}
-                      className="w-full px-3 py-2 bg-gray-900/80 border border-gray-700 rounded-md text-gray-300 focus:outline-none focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/50 transition-all font-mono"
-                    />
-                  </div>
-                </div>
-
-                <div className="flex justify-end gap-2">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setShowEntryModal(false)
-                      setSelectedEntry(null)
-                      setNewEntry({
-                        domain: '',
-                        attempts: '',
-                        ips: '',
-                        date: new Date().toISOString().split('T')[0],
-                        tenant: 'MWELL'
-                      })
-                    }}
-                    className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-md font-medium transition-all"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={isLoading}
-                    className="px-4 py-2 bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-500 hover:to-teal-500 text-white rounded-md font-medium transition-all flex items-center gap-2"
-                  >
-                    {isLoading ? (
-                      <RefreshCw size={16} className="animate-spin" />
-                    ) : (
-                      <Plus size={16} />
-                    )}
-                    {selectedEntry ? 'Update' : 'Add'} Entry
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        )}
-
-        {/* Details Modal */}
-        {showDetailsModal && selectedEntry && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div 
-              className="bg-gray-800 rounded-lg p-6 max-w-6xl w-full mx-4 max-h-[80vh] overflow-y-auto scrollbar-thin"
-              onScroll={handleVerticalScroll}
-            >
-              <div className="flex justify-between items-center mb-6 p-4 bg-gradient-to-r from-gray-800/50 to-gray-800/30 rounded-lg border border-cyan-500/20">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-cyan-500/10 rounded-lg">
-                    <FileText className="w-5 h-5 text-cyan-400" />
-                  </div>
-                  <h3 className="text-cyan-400 font-mono text-xl">Malicious Domains Details</h3>
-                </div>
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => handleEditEntry(selectedEntry.entries)}
-                    className="p-2 rounded-lg bg-yellow-500/10 hover:bg-yellow-500/20 text-yellow-400 hover:text-yellow-300 transition-all"
-                    title="Edit Entries"
-                  >
-                    <Edit2 size={18} />
-                  </button>
-                  <button 
-                    onClick={() => {
-                      setShowDetailsModal(false)
-                      setSelectedEntry(null)
-                    }}
-                    className="p-2 rounded-lg bg-gray-700/50 hover:bg-gray-700/70 text-gray-400 hover:text-gray-300 transition-all"
-                  >
-                    <X size={18} />
-                  </button>
-                </div>
-              </div>
-
-              <div className="mb-4 grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="bg-gray-700/30 p-4 rounded-lg">
-                  <h4 className="text-yellow-400 text-sm font-mono mb-2">Total Malicious Domains</h4>
-                  <p className="text-2xl font-bold text-gray-200">{selectedEntry.entries.length}</p>
-                </div>
-                <div className="bg-gray-700/30 p-4 rounded-lg">
-                  <h4 className="text-yellow-400 text-sm font-mono mb-2">Total Connection Attempts</h4>
-                  <p className="text-2xl font-bold text-gray-200">
-                    {selectedEntry.entries.reduce((sum, entry) => sum + parseInt(entry.attempts || 0), 0)}
-                  </p>
-                </div>
-                <div className="bg-gray-700/30 p-4 rounded-lg">
-                  <h4 className="text-yellow-400 text-sm font-mono mb-2">Total Unique IPs</h4>
-                  <p className="text-2xl font-bold text-gray-200">
-                    {new Set(selectedEntry.entries.flatMap(entry => entry.ips.split(',').map(ip => ip.trim()))).size}
-                  </p>
-                </div>
-              </div>
-              
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm text-gray-300">
-                  <thead className="bg-gray-700/50">
-                    <tr className="font-mono">
-                      <th className="px-4 py-3 text-left">Tenant</th>
-                      <th className="px-4 py-3 text-left">Malicious Domain</th>
-                      <th className="px-4 py-3 text-left">Connection Attempts</th>
-                      <th className="px-4 py-3 text-left">Accessing Internal IPs</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-700">
-                    {selectedEntry.entries.map((detail, index) => (
-                      <tr key={index} className="hover:bg-gray-700/30">
-                        <td className="px-4 py-3 font-mono">
-                          {detail.tenant === 'SiyCha' ? 'Project Orion' :
-                           detail.tenant === 'MWELL' ? 'Project Chiron' :
-                           detail.tenant === 'MPIW' ? 'Project Hunt' :
-                           detail.tenant === 'NIKI' ? 'Project NIKI' :
-                           detail.tenant === 'Cantilan' ? 'Project Atlas' :
-                           detail.tenant}
-                        </td>
-                        <td className="px-4 py-3 font-mono whitespace-normal break-all">{detail.domain}</td>
-                        <td className="px-4 py-3 font-mono">{detail.attempts}</td>
-                        <td className="px-4 py-3 font-mono whitespace-normal break-all">{detail.ips}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Confirmation Modal */}
-        {showConfirmModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="p-3 bg-red-500/10 rounded-full">
-                  <AlertCircle className="w-6 h-6 text-red-400" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-red-400 font-mono mb-1">
-                    Confirm Deletion
-                  </h3>
-                  <p className="text-gray-400 text-sm font-mono">
-                    {deleteAction.type === 'batch' 
-                      ? `Are you sure you want to delete ${deleteAction.entries.length} entries?`
-                      : 'Are you sure you want to delete this entry?'
-                    }
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex justify-end gap-3">
-                <button
-                  onClick={() => setShowConfirmModal(false)}
-                  className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-md font-medium transition-all font-mono"
+                  className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-md font-medium transition-all"
                 >
                   Cancel
                 </button>
                 <button
-                  onClick={deleteAction.onConfirm}
+                  type="submit"
                   disabled={isLoading}
-                  className="px-4 py-2 bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-400 text-white rounded-md font-medium transition-all font-mono flex items-center gap-2"
+                  className="px-4 py-2 bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-500 hover:to-teal-500 text-white rounded-md font-medium transition-all flex items-center gap-2"
                 >
                   {isLoading ? (
-                    <>
-                      <RefreshCw size={16} className="animate-spin" />
-                      <span>Deleting...</span>
-                    </>
+                    <RefreshCw size={16} className="animate-spin" />
                   ) : (
-                    <>
-                      <Trash2 size={16} />
-                      <span>Delete</span>
-                    </>
+                    <Plus size={16} />
                   )}
+                  {selectedEntry ? 'Update' : 'Add'} Entry
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Details Modal */}
+      {showDetailsModal && selectedEntry && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div 
+            className="bg-gray-800 rounded-lg p-6 max-w-6xl w-full mx-4 max-h-[80vh] overflow-y-auto scrollbar-thin"
+            onScroll={handleVerticalScroll}
+          >
+            <div className="flex justify-between items-center mb-6 p-4 bg-gradient-to-r from-gray-800/50 to-gray-800/30 rounded-lg border border-cyan-500/20">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-cyan-500/10 rounded-lg">
+                  <FileText className="w-5 h-5 text-cyan-400" />
+                </div>
+                <h3 className="text-cyan-400 font-mono text-xl">Malicious Domains Details</h3>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => handleEditEntry(selectedEntry.entries)}
+                  className="p-2 rounded-lg bg-yellow-500/10 hover:bg-yellow-500/20 text-yellow-400 hover:text-yellow-300 transition-all"
+                  title="Edit Entries"
+                >
+                  <Edit2 size={18} />
+                </button>
+                <button 
+                  onClick={() => {
+                    setShowDetailsModal(false)
+                    setSelectedEntry(null)
+                  }}
+                  className="p-2 rounded-lg bg-gray-700/50 hover:bg-gray-700/70 text-gray-400 hover:text-gray-300 transition-all"
+                >
+                  <X size={18} />
                 </button>
               </div>
             </div>
-          </div>
-        )}
 
-        {/* Edit Modal */}
-        {showEditModal && editEntry && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-gray-800 rounded-lg p-6 max-w-4xl w-full mx-4 max-h-[80vh] overflow-y-auto">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-cyan-400 font-mono text-xl">
-                  Edit Entries for {new Date(editEntry?.date).toLocaleDateString()}
+            <div className="mb-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="bg-gray-700/30 p-4 rounded-lg">
+                <h4 className="text-yellow-400 text-sm font-mono mb-2">Total Malicious Domains</h4>
+                <p className="text-2xl font-bold text-gray-200">{selectedEntry.entries.length}</p>
+              </div>
+              <div className="bg-gray-700/30 p-4 rounded-lg">
+                <h4 className="text-yellow-400 text-sm font-mono mb-2">Total Connection Attempts</h4>
+                <p className="text-2xl font-bold text-gray-200">
+                  {selectedEntry.entries.reduce((sum, entry) => sum + parseInt(entry.attempts || 0), 0)}
+                </p>
+              </div>
+              <div className="bg-gray-700/30 p-4 rounded-lg">
+                <h4 className="text-yellow-400 text-sm font-mono mb-2">Total Unique IPs</h4>
+                <p className="text-2xl font-bold text-gray-200">
+                  {new Set(selectedEntry.entries.flatMap(entry => entry.ips.split(',').map(ip => ip.trim()))).size}
+                </p>
+              </div>
+            </div>
+            
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm text-gray-300">
+                <thead className="bg-gray-700/50">
+                  <tr className="font-mono">
+                    <th className="px-4 py-3 text-left">Tenant</th>
+                    <th className="px-4 py-3 text-left">Malicious Domain</th>
+                    <th className="px-4 py-3 text-left">Connection Attempts</th>
+                    <th className="px-4 py-3 text-left">Accessing Internal IPs</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-700">
+                  {selectedEntry.entries.map((detail, index) => (
+                    <tr key={index} className="hover:bg-gray-700/30">
+                      <td className="px-4 py-3 font-mono">
+                        {detail.tenant === 'SiyCha' ? 'Project Orion' :
+                         detail.tenant === 'MWELL' ? 'Project Chiron' :
+                         detail.tenant === 'MPIW' ? 'Project Hunt' :
+                         detail.tenant === 'NIKI' ? 'Project NIKI' :
+                         detail.tenant === 'Cantilan' ? 'Project Atlas' :
+                         detail.tenant}
+                      </td>
+                      <td className="px-4 py-3 font-mono whitespace-normal break-all">{detail.domain}</td>
+                      <td className="px-4 py-3 font-mono">{detail.attempts}</td>
+                      <td className="px-4 py-3 font-mono whitespace-normal break-all">{detail.ips}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Confirmation Modal */}
+      {showConfirmModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="p-3 bg-red-500/10 rounded-full">
+                <AlertCircle className="w-6 h-6 text-red-400" />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-red-400 font-mono mb-1">
+                  Confirm Deletion
                 </h3>
-                <button 
+                <p className="text-gray-400 text-sm font-mono">
+                  {deleteAction.type === 'batch' 
+                    ? `Are you sure you want to delete ${deleteAction.entries.length} entries?`
+                    : 'Are you sure you want to delete this entry?'
+                  }
+                </p>
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => setShowConfirmModal(false)}
+                className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-md font-medium transition-all font-mono"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={deleteAction.onConfirm}
+                disabled={isLoading}
+                className="px-4 py-2 bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-400 text-white rounded-md font-medium transition-all font-mono flex items-center gap-2"
+              >
+                {isLoading ? (
+                  <>
+                    <RefreshCw size={16} className="animate-spin" />
+                    <span>Deleting...</span>
+                  </>
+                ) : (
+                  <>
+                    <Trash2 size={16} />
+                    <span>Delete</span>
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Modal */}
+      {showEditModal && editEntry && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-gray-800 rounded-lg p-6 max-w-4xl w-full mx-4 max-h-[80vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-cyan-400 font-mono text-xl">
+                Edit Entries for {new Date(editEntry?.date).toLocaleDateString()}
+              </h3>
+              <button 
+                onClick={() => {
+                  setShowEditModal(false)
+                  setEditEntry(null)
+                }}
+                className="text-gray-400 hover:text-gray-300"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            <form onSubmit={handleEditSubmit} className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                  <label className="block text-gray-300 mb-1">Date</label>
+                  <input
+                    type="date"
+                    value={editEntry.date}
+                    onChange={(e) => setEditEntry({ ...editEntry, date: e.target.value })}
+                    className="w-full px-3 py-2 bg-gray-900/80 border border-gray-700 rounded-md text-gray-300 focus:outline-none focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/50 transition-all font-mono"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-300 mb-1">Tenant</label>
+                  <select
+                    value={editEntry.tenant}
+                    onChange={(e) => setEditEntry({ ...editEntry, tenant: e.target.value })}
+                    className="w-full px-3 py-2 bg-gray-900/80 border border-gray-700 rounded-md text-gray-300 focus:outline-none focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/50 transition-all font-mono appearance-none"
+                    required
+                  >
+                    <option value="MWELL">Project Chiron</option>
+                    <option value="SiyCha">Project Orion</option>
+                    <option value="MPIW">Project Hunt</option>
+                    <option value="NIKI">Project NIKI</option>
+                    <option value="Cantilan">Project Atlas</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 gap-4">
+                <div>
+                  <label className="block text-gray-300 mb-1">Confirmed Malicious Domains</label>
+                  <textarea
+                    value={editEntry.domain}
+                    onChange={(e) => setEditEntry({ ...editEntry, domain: e.target.value })}
+                    placeholder="Enter domains (one per line)"
+                    rows={5}
+                    className="w-full px-3 py-2 bg-gray-900/80 border border-gray-700 rounded-md text-gray-300 focus:outline-none focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/50 transition-all font-mono"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-300 mb-1">Connection Attempts</label>
+                  <textarea
+                    value={editEntry.attempts}
+                    onChange={(e) => setEditEntry({ ...editEntry, attempts: e.target.value })}
+                    placeholder="Enter attempts (one per line)"
+                    rows={5}
+                    className="w-full px-3 py-2 bg-gray-900/80 border border-gray-700 rounded-md text-gray-300 focus:outline-none focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/50 transition-all font-mono"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-300 mb-1">Accessing Internal IPs</label>
+                  <textarea
+                    value={editEntry.ips}
+                    onChange={(e) => setEditEntry({ ...editEntry, ips: e.target.value })}
+                    placeholder="Enter IPs (one per line)"
+                    rows={5}
+                    className="w-full px-3 py-2 bg-gray-900/80 border border-gray-700 rounded-md text-gray-300 focus:outline-none focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/50 transition-all font-mono"
+                  />
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-2">
+                <button
+                  type="button"
                   onClick={() => {
                     setShowEditModal(false)
                     setEditEntry(null)
                   }}
-                  className="text-gray-400 hover:text-gray-300"
-                >
-                  <X size={24} />
-                </button>
-              </div>
-
-              <form onSubmit={handleEditSubmit} className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                  <div>
-                    <label className="block text-gray-300 mb-1">Date</label>
-                    <input
-                      type="date"
-                      value={editEntry.date}
-                      onChange={(e) => setEditEntry({ ...editEntry, date: e.target.value })}
-                      className="w-full px-3 py-2 bg-gray-900/80 border border-gray-700 rounded-md text-gray-300 focus:outline-none focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/50 transition-all font-mono"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-gray-300 mb-1">Tenant</label>
-                    <select
-                      value={editEntry.tenant}
-                      onChange={(e) => setEditEntry({ ...editEntry, tenant: e.target.value })}
-                      className="w-full px-3 py-2 bg-gray-900/80 border border-gray-700 rounded-md text-gray-300 focus:outline-none focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/50 transition-all font-mono appearance-none"
-                      required
-                    >
-                      <option value="MWELL">Project Chiron</option>
-                      <option value="SiyCha">Project Orion</option>
-                      <option value="MPIW">Project Hunt</option>
-                      <option value="NIKI">Project NIKI</option>
-                      <option value="Cantilan">Project Atlas</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 gap-4">
-                  <div>
-                    <label className="block text-gray-300 mb-1">Confirmed Malicious Domains</label>
-                    <textarea
-                      value={editEntry.domain}
-                      onChange={(e) => setEditEntry({ ...editEntry, domain: e.target.value })}
-                      placeholder="Enter domains (one per line)"
-                      rows={5}
-                      className="w-full px-3 py-2 bg-gray-900/80 border border-gray-700 rounded-md text-gray-300 focus:outline-none focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/50 transition-all font-mono"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-gray-300 mb-1">Connection Attempts</label>
-                    <textarea
-                      value={editEntry.attempts}
-                      onChange={(e) => setEditEntry({ ...editEntry, attempts: e.target.value })}
-                      placeholder="Enter attempts (one per line)"
-                      rows={5}
-                      className="w-full px-3 py-2 bg-gray-900/80 border border-gray-700 rounded-md text-gray-300 focus:outline-none focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/50 transition-all font-mono"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-gray-300 mb-1">Accessing Internal IPs</label>
-                    <textarea
-                      value={editEntry.ips}
-                      onChange={(e) => setEditEntry({ ...editEntry, ips: e.target.value })}
-                      placeholder="Enter IPs (one per line)"
-                      rows={5}
-                      className="w-full px-3 py-2 bg-gray-900/80 border border-gray-700 rounded-md text-gray-300 focus:outline-none focus:border-cyan-500/70 focus:ring-1 focus:ring-cyan-500/50 transition-all font-mono"
-                    />
-                  </div>
-                </div>
-
-                <div className="flex justify-end gap-2">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setShowEditModal(false)
-                      setEditEntry(null)
-                    }}
-                    className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-md font-medium transition-all"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={isLoading}
-                    className="px-4 py-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white rounded-md font-medium transition-all flex items-center gap-2"
-                  >
-                    {isLoading ? (
-                      <RefreshCw size={16} className="animate-spin" />
-                    ) : (
-                      <Edit2 size={16} />
-                    )}
-                    Update Entries
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        )}
-
-        {/* Edit Confirmation Modal */}
-        {showEditConfirmModal && editEntry && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="p-3 bg-cyan-500/10 rounded-full">
-                  <AlertCircle className="w-6 h-6 text-cyan-400" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-cyan-400 font-mono mb-1">
-                    Confirm Update
-                  </h3>
-                  <p className="text-gray-400 text-sm font-mono">
-                    Are you sure you want to update these entries?
-                  </p>
-                </div>
-              </div>
-
-              <div className="bg-gray-700/30 rounded-lg p-4 mb-6">
-                <p className="text-gray-300 text-sm mb-2">Changes to be made:</p>
-                <div className="space-y-2">
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">Date:</span>
-                    <span className="text-cyan-400">{editEntry.date}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">Tenant:</span>
-                    <span className="text-cyan-400">
-                      {editEntry.tenant === 'SiyCha' ? 'Project Orion' :
-                       editEntry.tenant === 'MWELL' ? 'Project Chiron' :
-                       editEntry.tenant === 'MPIW' ? 'Project Hunt' :
-                       editEntry.tenant === 'NIKI' ? 'Project NIKI' :
-                       editEntry.tenant === 'Cantilan' ? 'Project Atlas' :
-                       editEntry.tenant}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex justify-end gap-3">
-                <button
-                  onClick={() => setShowEditConfirmModal(false)}
-                  className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-md font-medium transition-all font-mono"
+                  className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-md font-medium transition-all"
                 >
                   Cancel
                 </button>
                 <button
-                  onClick={confirmEdit}
+                  type="submit"
                   disabled={isLoading}
-                  className="px-4 py-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white rounded-md font-medium transition-all font-mono flex items-center gap-2"
+                  className="px-4 py-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white rounded-md font-medium transition-all flex items-center gap-2"
                 >
                   {isLoading ? (
-                    <>
-                      <RefreshCw size={16} className="animate-spin" />
-                      <span>Updating...</span>
-                    </>
+                    <RefreshCw size={16} className="animate-spin" />
                   ) : (
-                    <>
-                      <Edit2 size={16} />
-                      <span>Confirm Update</span>
-                    </>
+                    <Edit2 size={16} />
                   )}
+                  Update Entries
                 </button>
               </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Confirmation Modal */}
+      {showEditConfirmModal && editEntry && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="p-3 bg-cyan-500/10 rounded-full">
+                <AlertCircle className="w-6 h-6 text-cyan-400" />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-cyan-400 font-mono mb-1">
+                  Confirm Update
+                </h3>
+                <p className="text-gray-400 text-sm font-mono">
+                  Are you sure you want to update these entries?
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-gray-700/30 rounded-lg p-4 mb-6">
+              <p className="text-gray-300 text-sm mb-2">Changes to be made:</p>
+              <div className="space-y-2">
+                <div className="flex justify-between">
+                  <span className="text-gray-400">Date:</span>
+                  <span className="text-cyan-400">{editEntry.date}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-400">Tenant:</span>
+                  <span className="text-cyan-400">
+                    {editEntry.tenant === 'SiyCha' ? 'Project Orion' :
+                     editEntry.tenant === 'MWELL' ? 'Project Chiron' :
+                     editEntry.tenant === 'MPIW' ? 'Project Hunt' :
+                     editEntry.tenant === 'NIKI' ? 'Project NIKI' :
+                     editEntry.tenant === 'Cantilan' ? 'Project Atlas' :
+                     editEntry.tenant}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => setShowEditConfirmModal(false)}
+                className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-md font-medium transition-all font-mono"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmEdit}
+                disabled={isLoading}
+                className="px-4 py-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white rounded-md font-medium transition-all font-mono flex items-center gap-2"
+              >
+                {isLoading ? (
+                  <>
+                    <RefreshCw size={16} className="animate-spin" />
+                    <span>Updating...</span>
+                  </>
+                ) : (
+                  <>
+                    <Edit2 size={16} />
+                    <span>Confirm Update</span>
+                  </>
+                )}
+              </button>
             </div>
           </div>
-        )}
+        </div>
+      )}
 
-        {/* Entry Confirmation Modal */}
-        {showEntryConfirmModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="p-3 bg-cyan-500/10 rounded-full">
-                  <AlertCircle className="w-6 h-6 text-cyan-400" />
+      {/* Entry Confirmation Modal */}
+      {showEntryConfirmModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="p-3 bg-cyan-500/10 rounded-full">
+                <AlertCircle className="w-6 h-6 text-cyan-400" />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-cyan-400 font-mono mb-1">
+                  Confirm New Entry
+                </h3>
+                <p className="text-gray-400 text-sm font-mono">
+                  Please review the entry details before confirming:
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-gray-700/30 rounded-lg p-4 mb-6">
+              <div className="space-y-3">
+                <div className="flex justify-between">
+                  <span className="text-gray-400">Date:</span>
+                  <span className="text-cyan-400">{new Date(newEntry.date).toLocaleDateString()}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-400">Tenant:</span>
+                  <span className="text-cyan-400">
+                    {newEntry.tenant === 'SiyCha' ? 'Project Orion' :
+                     newEntry.tenant === 'MWELL' ? 'Project Chiron' :
+                     newEntry.tenant === 'MPIW' ? 'Project Hunt' :
+                     newEntry.tenant === 'NIKI' ? 'Project NIKI' :
+                     newEntry.tenant === 'Cantilan' ? 'Project Atlas' :
+                     newEntry.tenant}
+                  </span>
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-cyan-400 font-mono mb-1">
-                    Confirm New Entry
-                  </h3>
-                  <p className="text-gray-400 text-sm font-mono">
-                    Please review the entry details before confirming:
-                  </p>
-                </div>
-              </div>
-
-              <div className="bg-gray-700/30 rounded-lg p-4 mb-6">
-                <div className="space-y-3">
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">Date:</span>
-                    <span className="text-cyan-400">{new Date(newEntry.date).toLocaleDateString()}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">Tenant:</span>
-                    <span className="text-cyan-400">
-                      {newEntry.tenant === 'SiyCha' ? 'Project Orion' :
-                       newEntry.tenant === 'MWELL' ? 'Project Chiron' :
-                       newEntry.tenant === 'MPIW' ? 'Project Hunt' :
-                       newEntry.tenant === 'NIKI' ? 'Project NIKI' :
-                       newEntry.tenant === 'Cantilan' ? 'Project Atlas' :
-                       newEntry.tenant}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-gray-400 block mb-1">Domains:</span>
-                    <div className="bg-gray-800/50 rounded p-2 max-h-32 overflow-y-auto">
-                      {newEntry.domain.split('\n').map((domain, index) => (
-                        <div key={index} className="text-cyan-400 text-sm font-mono">
-                          {domain.trim()}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  <div>
-                    <span className="text-gray-400 block mb-1">Connection Attempts:</span>
-                    <div className="bg-gray-800/50 rounded p-2 max-h-32 overflow-y-auto">
-                      {newEntry.attempts.split('\n').map((attempt, index) => (
-                        <div key={index} className="text-cyan-400 text-sm font-mono">
-                          {attempt.trim() || '0'}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  <div>
-                    <span className="text-gray-400 block mb-1">Internal IPs:</span>
-                    <div className="bg-gray-800/50 rounded p-2 max-h-32 overflow-y-auto">
-                      {newEntry.ips.split('\n').map((ip, index) => (
-                        <div key={index} className="text-cyan-400 text-sm font-mono">
-                          {ip.trim() || 'N/A'}
-                        </div>
-                      ))}
-                    </div>
+                  <span className="text-gray-400 block mb-1">Domains:</span>
+                  <div className="bg-gray-800/50 rounded p-2 max-h-32 overflow-y-auto">
+                    {newEntry.domain.split('\n').map((domain, index) => (
+                      <div key={index} className="text-cyan-400 text-sm font-mono">
+                        {domain.trim()}
+                      </div>
+                    ))}
                   </div>
                 </div>
-              </div>
-
-              <div className="flex justify-end gap-3">
-                <button
-                  onClick={() => setShowEntryConfirmModal(false)}
-                  className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-md font-medium transition-all font-mono"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={confirmAddEntry}
-                  disabled={isLoading}
-                  className="px-4 py-2 bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-500 hover:to-teal-500 text-white rounded-md font-medium transition-all font-mono flex items-center gap-2"
-                >
-                  {isLoading ? (
-                    <>
-                      <RefreshCw size={16} className="animate-spin" />
-                      <span>Adding...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Plus size={16} />
-                      <span>Confirm Add</span>
-                    </>
-                  )}
-                </button>
+                <div>
+                  <span className="text-gray-400 block mb-1">Connection Attempts:</span>
+                  <div className="bg-gray-800/50 rounded p-2 max-h-32 overflow-y-auto">
+                    {newEntry.attempts.split('\n').map((attempt, index) => (
+                      <div key={index} className="text-cyan-400 text-sm font-mono">
+                        {attempt.trim() || '0'}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <span className="text-gray-400 block mb-1">Internal IPs:</span>
+                  <div className="bg-gray-800/50 rounded p-2 max-h-32 overflow-y-auto">
+                    {newEntry.ips.split('\n').map((ip, index) => (
+                      <div key={index} className="text-cyan-400 text-sm font-mono">
+                        {ip.trim() || 'N/A'}
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
+
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => setShowEntryConfirmModal(false)}
+                className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-md font-medium transition-all font-mono"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmAddEntry}
+                disabled={isLoading}
+                className="px-4 py-2 bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-500 hover:to-teal-500 text-white rounded-md font-medium transition-all font-mono flex items-center gap-2"
+              >
+                {isLoading ? (
+                  <>
+                    <RefreshCw size={16} className="animate-spin" />
+                    <span>Adding...</span>
+                  </>
+                ) : (
+                  <>
+                    <Plus size={16} />
+                    <span>Confirm Add</span>
+                  </>
+                )}
+              </button>
+            </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   )
 }
